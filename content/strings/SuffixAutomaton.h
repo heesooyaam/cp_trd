@@ -1,17 +1,17 @@
 /**
  * Author: heesooyaam, adapted for cp_trd
  * Source: AlgoTemplates/Strings/suffix_structures/suffix_automaton.cpp
- * Description: Суффиксный автомат для a..z. Корень 1, отсутствующее состояние 0. add дописывает строку. Перед чтением occ вызвать count\_occurrences; повторный вызов допустим. get\_state\_size(v) возвращает включительный диапазон длин состояния.
+ * Description: Суффиксный автомат для a..z и разделителя \{ (27-й символ для набора строк). Корень 1, отсутствующее состояние 0. add дописывает строку. Перед чтением occ вызвать count\_occurrences; повторный вызов допустим. get\_state\_size(v) возвращает включительный диапазон длин состояния.
 
- * Time: Построение O(n), count\_occurrences O(n \log n).
- * Memory: O(26n)
+ * Time: Построение O(n), count\_occurrences O(n).
+ * Memory: O(27n)
  * Status: Exhaustive small strings, occurrences and traverser tests.
  */
 #pragma once
 struct suffix_automaton {
     struct node {
         int sufflink = 0, len = 0, occ = 0, seed = 0;
-        array<int, 26> go{};
+        array<int, 27> go{};
         int get_next(char c) const { return go[c - 'a']; }
     };
     static constexpr int root = 1;
@@ -30,7 +30,7 @@ struct suffix_automaton {
                                           st[v].len};
     }
     void push_back(char ch) {
-        assert('a' <= ch && ch <= 'z');
+        assert('a' <= ch && ch <= '{');
         int c = ch - 'a', v = last, cur = int(st.size());
         st.eb();
         st[cur].len = st[last].len + 1;
@@ -64,11 +64,19 @@ struct suffix_automaton {
             push_back(c);
     }
     void count_occurrences() {
-        vector<int> order(st.size() - 2);
-        iota(all(order), 2);
-        sort(all(order), [&](int a, int b) {
-            return st[a].len > st[b].len;
-        });
+        // Сортировка по длине подсчётом: O(n), не O(n log n).
+        int max_len = st[last].len;
+        vector<int> count(max_len + 1), order(st.size() - 2);
+        for (int v = 2; v < int(st.size()); ++v) {
+            ++count[st[v].len];
+        }
+        for (int len = 1; len <= max_len; ++len) {
+            count[len] += count[len - 1];
+        }
+        for (int v = 2; v < int(st.size()); ++v) {
+            order[--count[st[v].len]] = v;
+        }
+        reverse(all(order));
         for (auto &v : st)
             v.occ = v.seed;
         for (int v : order)
