@@ -2,7 +2,7 @@
  * Author: Simon Lindholm
  * Date: 2015-05-13
  * Source: Wikipedia
- * Description: After running max-flow, the left side of a min-cut from $s$ to $t$ is given
- * by all vertices reachable from $s$, only traversing edges with positive residual capacity.
+ * Description: После максимального потока сторона истока минимального разреза — вершины, достижимые из s по рёбрам положительной остаточной ёмкости. В нашем Динице это level[v]!=-1 после max\_flow.
+
  * Status: works
  */

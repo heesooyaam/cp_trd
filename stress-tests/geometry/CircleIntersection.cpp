@@ -6,9 +6,9 @@ int main() {
 	cin.sync_with_stdio(0); cin.tie(0);
 	cin.exceptions(cin.failbit);
 	srand(2);
-	rep(it,0,100000) {
+	for (int it = 0; it < (100000); ++it) {
 		double rnd[6];
-		rep(i,0,6)
+		for (int i = 0; i < (6); ++i)
 			rnd[i] = rand() % 21 - 10;
 		P a(rnd[0], rnd[1]);
 		P b(rnd[2], rnd[3]);
@@ -36,7 +36,7 @@ int main() {
 			int iters = 0;
 			for (int imp = 1; imp--;) {
 				if (++iters == 100) goto skip;
-				rep(dx,-1,2) rep(dy,-1,2) {
+				for (int dx = -1; dx < (2); ++dx) for (int dy = -1; dy < (2); ++dy) {
 					P p = cur.second;
 					p.x += dx*jmp;
 					p.y += dy*jmp;

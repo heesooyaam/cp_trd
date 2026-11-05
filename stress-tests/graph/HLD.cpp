@@ -74,8 +74,8 @@ void testAgainstOld(int n, int iters, int queries) {
 		vector<vector<int>> tree1(n);
 		vector<vector<pair<int, int>>> tree2(n);
 		for (auto i : graph) {
-			tree1[i.first].push_back(i.second);
-			tree1[i.second].push_back(i.first);
+			tree1[i.first].eb(i.second);
+			tree1[i.second].eb(i.first);
 		}
 		for (int i = 0; i < sz(tree1); i++) {
 			for (auto j : tree1[i]) {
@@ -84,7 +84,6 @@ void testAgainstOld(int n, int iters, int queries) {
 		}
 		HLD<false> hld(tree1);
 		old::HLD hld2(tree2);
-		hld.tree->set(0, n, 0);
 		for (int itr = 0; itr < queries; itr++) {
 			if (rand() % 2) {
 				int node = rand() % n;
@@ -104,12 +103,11 @@ void testAgainstBrute(int n, int iters, int queries) {
 		auto graph = genRandomTree(n);
 		vector<vector<int>> tree1(n);
 		for (auto i : graph) {
-			tree1[i.first].push_back(i.second);
-			tree1[i.second].push_back(i.first);
+			tree1[i.first].eb(i.second);
+			tree1[i.second].eb(i.first);
 		}
 		HLD<false> hld(tree1);
 		bruteforce hld2(tree1);
-		hld.tree->set(0, n, 0);
 		for (int itr = 0; itr < queries; itr++) {
 			int rng = rand() % 3;
 			if (rng == 0) {

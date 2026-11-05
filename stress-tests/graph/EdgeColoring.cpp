@@ -12,7 +12,7 @@ void test(int n, const vector<pii>& ed) {
 	vi cols = edgeColoring(n, ed);
 	assert(sz(cols) == sz(ed));
 	vector<vector<bool>> usedCols(n, vector<bool>(maxdeg+1));
-	rep(i,0,sz(cols)) {
+	for (int i = 0; i < (sz(cols)); ++i) {
 		int col = cols[i];
 		assert(cols[i] <= maxdeg);
 		for (int x : {ed[i].first, ed[i].second}) {
@@ -23,11 +23,11 @@ void test(int n, const vector<pii>& ed) {
 }
 
 void testCorrect() {
-	rep(n,0,7) {
-		rep(edbits,0,(1 << (n*(n-1)/2))) {
+	for (int n = 0; n < (7); ++n) {
+		for (int edbits = 0; edbits < ((1 << (n*(n-1)/2))); ++edbits) {
 			vector<pii> ed;
 			int it = 0;
-			rep(i,0,n) rep(j,i+1,n) {
+			for (int i = 0; i < (n); ++i) for (int j = i+1; j < (n); ++j) {
 				if (edbits & 1 << (it++)) {
 					ed.push_back({i, j});
 				}
@@ -36,7 +36,7 @@ void testCorrect() {
 				// test all k!*2^k input orders
 				sort(all(ed));
 				if (n != 0) do {
-					rep(bi,0,(1 << sz(ed))) {
+					for (int bi = 0; bi < ((1 << sz(ed))); ++bi) {
 						if (bi) {
 							int ind = __builtin_ctz(bi);
 							swap(ed[ind].first, ed[ind].second);
@@ -46,7 +46,7 @@ void testCorrect() {
 				} while (next_permutation(all(ed)));
 			} else {
 				int its = n == 5 ? 10 : 5;
-				rep(it,0,its) {
+				for (int it = 0; it < (its); ++it) {
 					shuffle_vec(ed);
 					for (auto& e : ed) if (randBool()) swap(e.first, e.second);
 					test(n, ed);
@@ -54,7 +54,7 @@ void testCorrect() {
 			}
 		}
 	}
-	rep(n,10,30) rep(it,0,200) {
+	for (int n = 10; n < (30); ++n) for (int it = 0; it < (200); ++it) {
 		int m = randIncl(n * (n-1) / 2);
 		vector<pii> ed = randomSimpleGraphAsEdgeList(n, m);
 		test(n, ed);
@@ -68,7 +68,7 @@ void testCorrect() {
 }
 
 void testPerfRandom() {
-	rep(i,0,100) {
+	for (int i = 0; i < (100); ++i) {
 		int n = 1000;
 		int m = 20000;
 		auto ed = randomSimpleGraphAsEdgeList(n, m);
@@ -81,7 +81,7 @@ void testPerfRegular() {
 	int k = 30;
 	// m = 45000
 	vector<pii> ed = randomRegularGraphAsEdgeList(n, k);
-	rep(i,0,100) edgeColoring(n, ed);
+	for (int i = 0; i < (100); ++i) edgeColoring(n, ed);
 }
 
 int main(int argc, char** argv) {

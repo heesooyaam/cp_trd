@@ -3,12 +3,12 @@
 #include "../../content/data-structures/FenwickTree2d.h"
 
 int main() {
-	rep(it,0,1000000) {
+	for (int it = 0; it < (1000000); ++it) {
 		FT2 ft(12);
 		vector<tuple<int, int, int>> upd;
 		int c = rand() % 20;
-		rep(i,0,c) {
-			upd.emplace_back(rand() % 12, rand() % 12, rand() % 10 - 5);
+		for (int i = 0; i < (c); ++i) {
+			upd.eb(rand() % 12, rand() % 12, rand() % 10 - 5);
 		}
 
 		vector<vi> grid(12, vi(12)), sumto(13, vi(13));
@@ -20,8 +20,8 @@ int main() {
 			ft.update(get<0>(pa), get<1>(pa), get<2>(pa));
 		}
 
-		rep(i,0,13) {
-			rep(j,0,13) {
+		for (int i = 0; i < (13); ++i) {
+			for (int j = 0; j < (13); ++j) {
 				ll v = ft.query(i, j);
 				if (i == 0 || j == 0) assert(v == 0);
 				else {

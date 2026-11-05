@@ -5,13 +5,13 @@ bool valid(vi deg) {
 	sort(all(deg));
 	reverse(all(deg));
 	int sum = 0;
-	rep(i,0,n) sum += deg[i];
+	for (int i = 0; i < (n); ++i) sum += deg[i];
 	if (sum & 1) return 0;
-	rep(k,0,n) {
+	for (int k = 0; k < (n); ++k) {
 		int s = 0, t = 0;
-		rep(i,0,k+1)
+		for (int i = 0; i < (k+1); ++i)
 			s += deg[i];
-		rep(i,k+1,n)
+		for (int i = k+1; i < (n); ++i)
 			t += min(deg[i], k + 1);
 		if (s > k * (k+1) + t) return 0;
 	}
@@ -19,13 +19,13 @@ bool valid(vi deg) {
 }
 
 int main() {
-	rep(N,0,7) {
+	for (int N = 0; N < (7); ++N) {
 		vector<pii> possibleEd;
-		rep(i,0,N) rep(j,0,i) possibleEd.emplace_back(i, j);
+		for (int i = 0; i < (N); ++i) for (int j = 0; j < (i); ++j) possibleEd.eb(i, j);
 		set<vi> valids;
-		rep(bi,0,(1 << sz(possibleEd))) {
+		for (int bi = 0; bi < ((1 << sz(possibleEd))); ++bi) {
 			vi deg(N);
-			rep(i,0,sz(possibleEd)) if (bi & (1 << i)) {
+			for (int i = 0; i < (sz(possibleEd)); ++i) if (bi & (1 << i)) {
 				int a, b;
 				tie(a, b) = possibleEd[i];
 				deg[a]++;
@@ -40,7 +40,7 @@ int main() {
 			if (at == N) {
 				assert(valid(de) == valids.count(de));
 			} else {
-				rep(a,0,N) {
+				for (int a = 0; a < (N); ++a) {
 					de[at] = a;
 					rec(at + 1);
 				}

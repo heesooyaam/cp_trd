@@ -3,7 +3,7 @@
 #include "../../content/number-theory/ModularArithmetic.h"
 
 int main() {
-	rep(a,0,mod) rep(b,1,mod) {
+	for (int a = 0; a < (mod); ++a) for (int b = 1; b < (mod); ++b) {
 		Mod ma(a);
 		Mod mb(b);
 		Mod mc = ma / mb;
@@ -11,7 +11,7 @@ int main() {
 	}
 	Mod a = 2;
 	ll cur=1;
-	rep(i, 0, 17) {
+	for (int i = 0; i < (17); ++i) {
 		assert((a ^ i).x == cur);
 		cur = (cur * 2) % mod;
 		// cout << i << ": " << (a ^ i).x << endl;

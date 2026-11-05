@@ -5,14 +5,14 @@
 
 int main() {
 	srand(2);
-	rep(it,0,1000000) {
+	for (int it = 0; it < (1000000); ++it) {
 		int N = (rand() % 10) + 1;
 		vector<Point<ll>> ps;
-		rep(i,0,N) {
-			ps.emplace_back(rand() % 11 - 5, rand() % 11 - 5);
+		for (int i = 0; i < (N); ++i) {
+			ps.eb(rand() % 11 - 5, rand() % 11 - 5);
 		}
 		ll r1 = 0;
-		rep(i,0,N) rep(j,0,i) {
+		for (int i = 0; i < (N); ++i) for (int j = 0; j < (i); ++j) {
 			r1 = max(r1, (ps[i] - ps[j]).dist2());
 		}
 		auto pa = hullDiameter(convexHull(ps));

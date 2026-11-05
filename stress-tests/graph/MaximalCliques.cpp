@@ -6,21 +6,21 @@ template<class F>
 void fastCliques(vector<B>& eds, F f) {
 	B R{}, P = ~B(), X{};
 	vi deg(sz(eds));
-	rep(i,0,sz(eds)) deg[i] = sz(eds[i]);
-	rep(j,0,sz(eds)) {
+	for (int i = 0; i < (sz(eds)); ++i) deg[i] = sz(eds[i]);
+	for (int j = 0; j < (sz(eds)); ++j) {
 		int i = (int)(min_element(all(deg)) - deg.begin());
 		R[i] = 1;
 		rec(eds, R, P & eds[i], X & eds[i], f);
 		R[i] = P[i] = 0; X[i] = 1;
-		rep(k,0,sz(eds)) if (eds[i][k]) deg[k]--;
+		for (int k = 0; k < (sz(eds)); ++k) if (eds[i][k]) deg[k]--;
 		deg[i] = 1000000;
 	}
 }
 
 int main1() {
-	rep(n,1,11) rep(m,0,200) {
+	for (int n = 1; n < (11); ++n) for (int m = 0; m < (200); ++m) {
 		vector<B> ed(n);
-		rep(i,0,m) {
+		for (int i = 0; i < (m); ++i) {
 			int a = rand() % n, b = rand() % n;
 			if (a == b) continue;
 			ed[a][b] = 1;
@@ -34,13 +34,13 @@ int main1() {
 		});
 		assert(sz(cl) == co); // no duplicates
 		auto isClique = [&](B c) {
-			rep(i,0,n) if (c[i])
-			rep(j,i+1,n) if (c[j]) {
+			for (int i = 0; i < (n); ++i) if (c[i])
+			for (int j = i+1; j < (n); ++j) if (c[j]) {
 				if (!ed[i][j]) return false; // not a clique
 			}
-			rep(i,0,n) if (!c[i]) {
+			for (int i = 0; i < (n); ++i) if (!c[i]) {
 				bool all = true;
-				rep(j,0,n) if (c[j]) all &= ed[i][j];
+				for (int j = 0; j < (n); ++j) if (c[j]) all &= ed[i][j];
 				if (all) return false; // not maximal
 			}
 			return true;
@@ -50,9 +50,9 @@ int main1() {
 		}
 
 		int realCo = 0;
-		rep(bi,0,(1 << n)) {
+		for (int bi = 0; bi < ((1 << n)); ++bi) {
 			B c{};
-			rep(i,0,n) c[i] = !!(bi & (1 << i));
+			for (int i = 0; i < (n); ++i) c[i] = !!(bi & (1 << i));
 			if (isClique(c)) realCo++;
 		}
 		assert(co == realCo);
@@ -62,10 +62,10 @@ int main1() {
 }
 
 int main2() {
-	rep(it,0,20) {
+	for (int it = 0; it < (20); ++it) {
 		const int n = 128, m = 4000;
 		vector<B> ed(n);
-		rep(i,0,m) {
+		for (int i = 0; i < (m); ++i) {
 			int a = rand() % n, b = rand() % n;
 			if (a == b) continue;
 			ed[a][b] = 1;

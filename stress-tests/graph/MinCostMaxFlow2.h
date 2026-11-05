@@ -22,8 +22,8 @@ template<class G>
 void flow_add_edge(G& g, int s, int t,
 		Flow c, Flow cost = 0) {
 	assert(s != t);
-	g[s].push_back(FlowEdge(t, sz(g[t]), c, cost));
-	g[t].push_back(FlowEdge(s, sz(g[s]) - 1, 0, cost));
+	g[s].eb(FlowEdge(t, sz(g[t]), c, cost));
+	g[t].eb(FlowEdge(s, sz(g[s]) - 1, 0, cost));
 }
 
 template<class G>

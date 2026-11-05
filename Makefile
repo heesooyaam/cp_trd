@@ -1,4 +1,5 @@
-LATEXCMD = pdflatex -shell-escape -output-directory build/
+export CXX
+LATEXCMD = pdflatex -interaction=nonstopmode -halt-on-error -shell-escape -output-directory build/
 export TEXINPUTS=.:content/tex/:
 export max_print_line = 1048576
 

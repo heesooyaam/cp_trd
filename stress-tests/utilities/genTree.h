@@ -49,7 +49,7 @@ vector<pair<int,int>> pruferCodeToTree(vector<int> &pruferCode) {
 vector<pair<int, int>> genRandomTree(int n) {
 	vector<int> pruferCode;
 	for (int i=0; i<n-2; i++) {
-		pruferCode.push_back(rand()%(n-1) + 1);
+		pruferCode.eb(rand()%(n-1) + 1);
 	}
 	auto edges = pruferCodeToTree(pruferCode);
 	for (auto &p: edges)

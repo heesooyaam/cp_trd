@@ -14,8 +14,8 @@ vi eratosthenes(int LIM) {
 		// array<bool, S> block{};
 		for (auto &[p, idx] : cp)
 			for (int i=idx; i < S+L; idx = (i+=p)) block[i-L] = 1;
-		rep(i,0,min(S, R - L))
-			if (!block[i]) pr.push_back((L + i) * 2 + 1);
+		for (int i = 0; i < (min(S, R - L)); ++i)
+			if (!block[i]) pr.eb((L + i) * 2 + 1);
 	}
 	return pr;
 }

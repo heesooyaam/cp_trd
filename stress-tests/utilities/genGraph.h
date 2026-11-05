@@ -5,7 +5,7 @@ vector<pii> randomSimpleGraphAsEdgeList(int n, int m) {
 	assert(m <= (ll)n * (n - 1) / 2);
 	vector<pii> ed;
 	if (m > (ll)n * n / 3) {
-		rep(i,0,n) rep(j,0,i) {
+		for (int i = 0; i < (n); ++i) for (int j = 0; j < (i); ++j) {
 			int a = i, b = j;
 			if (randBool()) swap(a, b);
 			ed.push_back({a,b});
@@ -14,7 +14,7 @@ vector<pii> randomSimpleGraphAsEdgeList(int n, int m) {
 		ed.erase(ed.begin() + m, ed.end());
 	} else {
 		set<pii> seen;
-		rep(i,0,m) {
+		for (int i = 0; i < (m); ++i) {
 			int a = randRange(n);
 			int b = randRange(n);
 			if (a == b) continue;
@@ -28,8 +28,8 @@ vector<pii> randomSimpleGraphAsEdgeList(int n, int m) {
 vector<vi> randomSimpleGraph(int n, int m) {
 	vector<vi> ed(n);
 	for (auto pa : randomSimpleGraphAsEdgeList(n, m)) {
-		ed[pa.first].push_back(pa.second);
-		ed[pa.second].push_back(pa.first);
+		ed[pa.first].eb(pa.second);
+		ed[pa.second].eb(pa.first);
 	}
 	for (auto& v : ed) shuffle_vec(v);
 	return ed;
@@ -41,7 +41,7 @@ vector<pii> randomRegularGraphAsEdgeList(int n, int k) {
 	assert(k < n);
 	vector<pii> ed;
 	vi cands(n), rem(n, k);
-	rep(i,0,n) cands[i] = i;
+	for (int i = 0; i < (n); ++i) cands[i] = i;
 	int failures = 0;
 	set<pii> seen;
 	while (!cands.empty()) {

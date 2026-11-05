@@ -14,17 +14,17 @@ int main() {
 	C = (int)tp.tv_usec;
 	assert((ull)(H(1)*2+1-3) == 0);
 
-	rep(it,0,10000) {
+	for (int it = 0; it < (10000); ++it) {
 		int n = rand() % 10;
 		int alpha = rand() % 10 + 1;
 		string s;
-		rep(i,0,n) s += (char)('a' + rand() % alpha);
+		for (int i = 0; i < (n); ++i) s += (char)('a' + rand() % alpha);
 		HashInterval hi(s);
 		set<string> strs;
 		set<ull> hashes;
 
 		// HashInterval
-		rep(i,0,n+1) rep(j,i,n+1) {
+		for (int i = 0; i < (n+1); ++i) for (int j = i; j < (n+1); ++j) {
 			string sub = s.substr(i, j - i);
 			ull hash = (ull) hashString(sub);
 			assert((ull) hi.hashInterval(i, j) == hash);
@@ -33,10 +33,10 @@ int main() {
 		}
 
 		// getHashes
-		rep(le,1,n+1) {
+		for (int le = 1; le < (n+1); ++le) {
 			auto ve = getHashes(s, le);
 			assert(sz(ve) == n-le+1);
-			rep(i,0,n-le+1) {
+			for (int i = 0; i < (n-le+1); ++i) {
 				assert((ull) ve[i] == (ull) hi.hashInterval(i, i + le));
 			}
 		}

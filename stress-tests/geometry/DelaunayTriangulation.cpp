@@ -10,11 +10,11 @@
 typedef Point<double> P;
 int main() {
 	feenableexcept(29);
-	rep(it,0,100000) {{
+	for (int it = 0; it < (100000); ++it) {{
 		vector<P> ps;
 		int N = rand() % 20 + 1;
-		rep(i,0,N) {
-			ps.emplace_back(rand() % 100 - 50, rand() % 100 - 50);
+		for (int i = 0; i < (N); ++i) {
+			ps.eb(rand() % 100 - 50, rand() % 100 - 50);
 		}
 
 		auto coc = [&](int i, int j, int k, int l) {
@@ -28,10 +28,10 @@ int main() {
 			return abs(q) < 1e-4;
 		};
 
-		rep(i,0,N) rep(j,0,i) rep(k,0,j) {
+		for (int i = 0; i < (N); ++i) for (int j = 0; j < (i); ++j) for (int k = 0; k < (j); ++k) {
 			if (ps[i].cross(ps[j], ps[k]) == 0) {  goto fail; }
 		}
-		rep(i,0,N) rep(j,0,i) rep(k,0,j) rep(l,0,k) {
+		for (int i = 0; i < (N); ++i) for (int j = 0; j < (i); ++j) for (int k = 0; k < (j); ++k) for (int l = 0; l < (k); ++l) {
 			if (coc(i,j,k,l) || coc(i,j,l,k) || coc(i,l,j,k) || coc(i,l,k,j)) { goto fail; }
 		}
 
@@ -58,11 +58,11 @@ int main() {
 			sumar += ar;
 			P c = ccCenter(ps[i], ps[j], ps[k]);
 			double ra = ccRadius(ps[i], ps[j], ps[k]);
-			rep(l,0,N) {
+			for (int l = 0; l < (N); ++l) {
 				if ((ps[l] - c).dist() < ra - 1e-5) fail();
 			}
 		});
-		if (N >= 3) rep(i,0,N) if (!used[i]) fail();
+		if (N >= 3) for (int i = 0; i < (N); ++i) if (!used[i]) fail();
 
 		vector<P> hull = convexHull(ps);
 		double ar2 = polygonArea2(hull);

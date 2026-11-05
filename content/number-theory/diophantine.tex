@@ -1,0 +1,40 @@
+\section{Линейные диофантовы уравнения}
+Ищем целые $x,y$ в $ax+by=c$. Если $(a,b)\ne(0,0)$, положим
+$g=\gcd(|a|,|b|)>0$. Решение существует тогда и только тогда, когда
+$g\mid c$. Расширенный Евклид даёт $au+bv=g$; умножаем на $c/g$:
+\[ x=x_0+t\,b/g,\quad y=y_0-t\,a/g,\qquad t\in\mathbb Z. \]
+Ограничения на x,y превращаются в пересечение целочисленных интервалов t.
+Для $d>0$ условие $l\le z+dt\le r$ даёт
+$\lceil(l-z)/d\rceil\le t\le\lfloor(r-z)/d\rfloor$;
+при $d<0$ границы меняются местами, при $d=0$ проверяем само z.
+В коде границы включительные, \texttt{nullopt} означает бесконечность.
+Число решений на $[L,R]$ равно $R-L+1$ (0, если интервал пуст).
+Для минимума $px+qy$ знак $p\,dx+q\,dy$ выбирает левую или правую
+границу t; нулевой наклон означает, что подходят все решения.
+Если нужной границы нет, минимум не ограничен снизу.
+При $a=b=0$: для $c\ne0$ решений нет, для $c=0$ обе координаты свободны.
+
+\kactlimport{Diophantine.h}
+\begin{lstlisting}
+diophantine d(6, 9, 30); // 2x+3y=10
+d.bounds(0, nullopt, 0, nullopt); // x,y >= 0
+assert(d.count() == optional<i128>(2)); // (2,2), (5,0)
+auto best = d.minimum(1, 1); // min(x+y): (2,2)
+assert(best.status == 1 && best.x == 2 && best.y == 2);
+auto box = d;
+box.bounds(3, 100, 0, 100); // теперь только (5,0)
+diophantine line(0, -3, 6); // y=-2, x свободен
+assert(!line.count()); // бесконечно много решений
+assert(line.minimum(1, 0).status == 0); // x -> -inf
+line.bounds(-5, 5, nullopt, nullopt);
+assert(line.count() == optional<i128>(11));
+assert(line.minimum(1, 0).x == -5);
+diophantine plane(0, 0, 0); // любые (x,y)
+plane.bounds(-1, 1, -2, 2);
+assert(plane.count() == optional<i128>(15));
+assert(diophantine(0, 0, 1).count() == optional<i128>(0));
+assert(diophantine(6, 9, 1).count() == optional<i128>(0));
+\end{lstlisting}
+Без ограничений \texttt{minimum(0,0)} возвращает произвольное решение,
+если оно существует. Ответы \texttt{i128} не сужать до ll без проверки;
+для вывода нужна отдельная функция печати \texttt{\_\_int128}.

@@ -1,8 +1,12 @@
 #include <bits/stdc++.h>
 using namespace std;
+#ifndef all
+#define all(x) std::begin(x), std::end(x)
+#endif
+#ifndef eb
+#define eb(...) emplace_back(__VA_ARGS__)
+#endif
 
-#define rep(i, a, b) for(int i = a; i < int(b); ++i)
-#define all(x) x.begin(), x.end()
 #define sz(x) (int)(x).size()
 
 typedef long long ll;
@@ -40,12 +44,12 @@ bool eq(P a, P b) {
 const int NUMPOLY=100;
 const int PTPERPOLY=100;
 void test(int numPts, int range) {
-	rep(i,0,NUMPOLY) {
+	for (int i = 0; i < (NUMPOLY); ++i) {
 		vector<P> poly;
-		rep(j,0, numPts)
-			poly.push_back(P(rand()%range, rand()%range));
+		for (int j = 0; j < (numPts); ++j)
+			poly.eb(P(rand()%range, rand()%range));
 		poly = genPolygon(poly);
-		rep(i,0,PTPERPOLY){
+		for (int i = 0; i < (PTPERPOLY); ++i){
 			P p(rand()%range, rand()%range);
 			assert(inPolygon(poly, p, true) == old::insidePolygon(all(poly), p, true));
 			assert(inPolygon(poly, p, false) == old::insidePolygon(all(poly), p, false));

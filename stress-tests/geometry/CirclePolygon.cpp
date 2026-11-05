@@ -24,7 +24,7 @@ long double areaCT(P pa, P pb, long double r) {
 }
 long double circlePoly(P c, long double r, vector<P> poly) {
 	long double area = 0;
-	rep(i,0,sz(poly)){
+	for (int i = 0; i < (sz(poly)); ++i){
 		auto a = poly[i] - c, b = poly[(i+1)%sz(poly)] - c;
 		area += areaCT(a, b, r) * sgn(a.cross(b));
 	}
@@ -41,7 +41,7 @@ signed main() {
 		vector<Point<int>> pts;
 		for (int j=0; j<10; j++) {
 			int x = rand()%lim, y = rand()%lim;
-			pts.push_back(Point<int>(x, y));
+			pts.eb(Point<int>(x, y));
 		}
 
 		auto polyInt = genPolygon(pts);
@@ -54,8 +54,8 @@ signed main() {
 		vector<P> poly;
 		vector<orig::P> poly2;
 		for (auto j: polyInt) {
-			poly.push_back(P(j.x, j.y));
-			poly2.push_back(orig::P(j.x, j.y));
+			poly.eb(P(j.x, j.y));
+			poly2.eb(orig::P(j.x, j.y));
 		}
 		auto res1 = circlePoly(c, r, poly);
 		auto res2 = orig::circlePoly(c2, r, poly2);

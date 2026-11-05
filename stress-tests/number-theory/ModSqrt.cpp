@@ -9,9 +9,9 @@ ll modpow(ll a, ll e, ll mod) {
 #include "../../content/number-theory/ModSqrt.h"
 
 int main() {
-	rep(p,2,10000) {
-		rep(i,2,p) if (p % i == 0) goto next;
-		rep(a,0,p) {
+	for (int p = 2; p < (10000); ++p) {
+		for (int i = 2; i < (p); ++i) if (p % i == 0) goto next;
+		for (int a = 0; a < (p); ++a) {
 			if (p != 2 && modpow(a, (p-1)/2, p) == p-1) continue;
 			ll x = sqrt(a, p);
 			assert(0 <= x && x < p);

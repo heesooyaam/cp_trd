@@ -9,17 +9,17 @@ vi coverHK(vector<vi>& g, int n, int m) {
 	vector<bool> lfound(n, true), seen(m);
 	for(auto &it: match) if (it != -1) lfound[it] = false;
 	vi q, cover;
-	rep(i,0,n) if (lfound[i]) q.push_back(i);
+	for (int i = 0; i < (n); ++i) if (lfound[i]) q.eb(i);
 	while (!q.empty()) {
 		int i = q.back(); q.pop_back();
 		lfound[i] = 1;
 		for(auto &e: g[i]) if (!seen[e] && match[e] != -1) {
 			seen[e] = true;
-			q.push_back(match[e]);
+			q.eb(match[e]);
 		}
 	}
-	rep(i,0,n) if (!lfound[i]) cover.push_back(i);
-	rep(i,0,m) if (seen[i]) cover.push_back(n+i);
+	for (int i = 0; i < (n); ++i) if (!lfound[i]) cover.eb(i);
+	for (int i = 0; i < (m); ++i) if (seen[i]) cover.eb(n+i);
 	assert(sz(cover) == res);
 	return cover;
 }
@@ -27,38 +27,38 @@ vi coverHK(vector<vi>& g, int n, int m) {
 int main() {
 	const int MAXN = 20;
 	mt19937 rng(17);
-	rep(it,0,300'000) {
+	for (int it = 0; it < (300'000); ++it) {
 		int N = rand() % MAXN, M = rand() % MAXN;
 		vector<vi> gr(N);
 		int co = rand() % 128 < 10 ? 2 : 1;
-		rep(_,0,co) {
+		for (int _ = 0; _ < (co); ++_) {
 			int prop = rand();
 			if (max(N, M) >= 5 && rand() % 128 < 90) {
 				prop /= max(N, M);
 				prop *= 2;
 			}
-			rep(i,0,N) rep(j,0,M) if (rand() < prop) {
-				gr[i].push_back(j);
+			for (int i = 0; i < (N); ++i) for (int j = 0; j < (M); ++j) if (rand() < prop) {
+				gr[i].eb(j);
 			}
 		}
 		if (rand() % 128 < 20 && N && M) {
 			int paths = rand() % min(N, M);
 			vi left(N), right(M);
-			rep(i,0,N) left[i] = i;
-			rep(i,0,M) right[i] = i;
-			rep(_,0,paths) {
+			for (int i = 0; i < (N); ++i) left[i] = i;
+			for (int i = 0; i < (M); ++i) right[i] = i;
+			for (int _ = 0; _ < (paths); ++_) {
 				shuffle(all(left), rng);
 				shuffle(all(right), rng);
 				int len = rand() % min(N, M) + 1;
-				if (rand() & 128) gr[left[0]].push_back(right[0]);
-				rep(i,1,len-1) {
-					gr[left[i]].push_back(right[i-1]);
-					gr[left[i]].push_back(right[i]);
+				if (rand() & 128) gr[left[0]].eb(right[0]);
+				for (int i = 1; i < (len-1); ++i) {
+					gr[left[i]].eb(right[i-1]);
+					gr[left[i]].eb(right[i]);
 				}
-				if (len > 1 && (rand() & 128)) gr[left.back()].push_back(right.back());
+				if (len > 1 && (rand() & 128)) gr[left.back()].eb(right.back());
 			}
 		}
-		rep(i,0,N) {
+		for (int i = 0; i < (N); ++i) {
 			// Duplicate edges are okay
 			// sort(all(gr[i]));
 			// gr[i].erase(unique(all(gr[i])), gr[i].end());
@@ -70,11 +70,11 @@ int main() {
 				if (x < N) left[x] = 1;
 				else right[x - N] = 1;
 			}
-			rep(i,0,N) if (!left[i]) for(auto &j:gr[i]) {
+			for (int i = 0; i < (N); ++i) if (!left[i]) for(auto &j:gr[i]) {
 				assert(right[j]);
 				/* if (!right[j]) {
 					cout << N << ' ' << M << endl;
-					rep(i,0,N) for(auto &j: gr[i]) cout << i << " - " << j << endl;
+					for (int i = 0; i < (N); ++i) for(auto &j: gr[i]) cout << i << " - " << j << endl;
 					cout << "yields " << sz(cover) << endl;
 					for(auto &x: cover) cout << x << endl;
 					abort();

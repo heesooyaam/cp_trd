@@ -7,7 +7,7 @@ template<class F>
 void gen(string& s, int at, int alpha, F f) {
 	if (at == sz(s)) f();
 	else {
-		rep(i,0,alpha) {
+		for (int i = 0; i < (alpha); ++i) {
 			s[at] = (char)('A' + i);
 			gen(s, at+1, alpha, f);
 		}
@@ -17,9 +17,9 @@ void gen(string& s, int at, int alpha, F f) {
 void test(const string& s) {
 	vector<string> pats;
 	string cur;
-	rep(i,0,sz(s)) {
+	for (int i = 0; i < (sz(s)); ++i) {
 		if (s[i] == 'A') {
-			pats.push_back(cur);
+			pats.eb(cur);
 			cur = "";
 		}
 		else cur += s[i];
@@ -32,12 +32,12 @@ void test(const string& s) {
 	vector<vi> positions = ac.findAll(pats, hay);
 
 	vi ord;
-	rep(i,0,sz(hay)) {
+	for (int i = 0; i < (sz(hay)); ++i) {
 		ord.clear();
-		rep(j,0,sz(pats)) {
+		for (int j = 0; j < (sz(pats)); ++j) {
 			string& pat = pats[j];
 			if (hay.substr(i, pat.size()) == pat) {
-				ord.push_back(j);
+				ord.eb(j);
 			}
 		}
 		sort(all(positions[i]));
@@ -60,14 +60,14 @@ void test(const string& s) {
 
 int main() {
 	// test ~4^10 strings
-	rep(n,0,11) {
+	for (int n = 0; n < (11); ++n) {
 		string s(n, 'x');
 		gen(s, 0, 4, [&]() {
 			test(s);
 		});
 	}
 	// then ~5^7
-	rep(n,0,8) {
+	for (int n = 0; n < (8); ++n) {
 		string s(n, 'x');
 		gen(s, 0, 5, [&]() {
 			test(s);
