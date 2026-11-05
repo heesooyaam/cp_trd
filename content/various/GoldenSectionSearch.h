@@ -6,8 +6,8 @@
  * Description: Finds the argument minimizing the function $f$ in the interval $[a,b]$
  * assuming $f$ is unimodal on the interval, i.e. has only one local minimum and no local
  * maximum. The maximum error in the result is $eps$. Works equally well for maximization
- * with a small change in the code. See TernarySearch.h in the Various chapter for a
- * discrete version.
+ * with a small change in the code. Reuses one function value each iteration,
+ * so only one new evaluation is needed per step after initialization.
  * Usage:
 	double func(double x) { return 4+x+.3*x*x; }
 	double xmin = gss(-1000,1000,func);
