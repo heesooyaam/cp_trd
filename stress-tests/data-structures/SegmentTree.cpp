@@ -57,7 +57,7 @@ int main() {
 		const int N = 10000;
 		maximum::Tree tr(N);
 		ll sum = 0;
-		rep(it,0,1000000) {
+		for (int it = 0; it < (1000000); ++it) {
 			tr.update(ra() % N, ra());
 			int i = ra() % N;
 			int j = ra() % N;
@@ -69,17 +69,17 @@ int main() {
 		// return 0;
 	}
 
-	rep(n,1,10) {
+	for (int n = 1; n < (10); ++n) {
 		maximum::Tree tr(n);
 		vi v(n, maximum::Tree::unit);
-		rep(it,0,1000000) {
+		for (int it = 0; it < (1000000); ++it) {
 			int i = rand() % (n+1), j = rand() % (n+1);
 			int x = rand() % (n+2);
 
 			int r = rand() % 100;
 			if (r < 30) {
 				int ma = tr.unit;
-				rep(k,i,j) ma = max(ma, v[k]);
+				for (int k = i; k < (j); ++k) ma = max(ma, v[k]);
 				assert(ma == tr.query(i,j));
 			}
 			else {
@@ -90,17 +90,17 @@ int main() {
 		}
 	}
 
-	rep(n,1,10) {
+	for (int n = 1; n < (10); ++n) {
 		nonabelian::Tree tr(n);
 		vi v(n);
-		rep(it,0,1000000) {
+		for (int it = 0; it < (1000000); ++it) {
 			int i = rand() % (n+1), j = rand() % (n+1);
 			int x = rand() % 6;
 
 			int r = rand() % 100;
 			if (r < 30) {
 				int ma = tr.unit;
-				rep(k,i,j) ma = nonabelian::lut[ma][v[k]];
+				for (int k = i; k < (j); ++k) ma = nonabelian::lut[ma][v[k]];
 				assert(ma == tr.query(i,j));
 			}
 			else {

@@ -46,8 +46,8 @@ int Directed_MST(int root, int NV, int NE) {
 	int ret = 0;
 	int u, v;
 	while (true) {
-		rep(i,0,NV)   In[i] = inf;
-		rep(i,0,NE) {
+		for (int i = 0; i < (NV); ++i)   In[i] = inf;
+		for (int i = 0; i < (NE); ++i) {
 			u = E_copy[i].u;
 			v = E_copy[i].v;
 			if(E_copy[i].cost < In[v] && u != v) {
@@ -55,19 +55,19 @@ int Directed_MST(int root, int NV, int NE) {
 				pre[v] = u;
 			}
 		}
-		rep(i,0,NV) {
+		for (int i = 0; i < (NV); ++i) {
 			if(i == root)   continue;
 			if(In[i] == inf)    return -1; // no solution
 		}
 
 		int cnt = 0;
-		rep(i,0,NV) {
+		for (int i = 0; i < (NV); ++i) {
 			ID[i] = -1;
 			vis[i] = -1;
 		}
 		In[root] = 0;
 
-		rep(i,0,NV) {
+		for (int i = 0; i < (NV); ++i) {
 			ret += In[i];
 			int v = i;
 			while(vis[v] != i && ID[v] == -1 && v != root) {
@@ -82,10 +82,10 @@ int Directed_MST(int root, int NV, int NE) {
 			}
 		}
 		if(cnt == 0)    break;
-		rep(i,0,NV) {
+		for (int i = 0; i < (NV); ++i) {
 			if(ID[i] == -1) ID[i] = cnt++;
 		}
-		rep(i,0,NE) {
+		for (int i = 0; i < (NE); ++i) {
 			v = E_copy[i].v;
 			E_copy[i].u = ID[E_copy[i].u];
 			E_copy[i].v = ID[E_copy[i].v];
@@ -102,15 +102,15 @@ int Directed_MST(int root, int NV, int NE) {
 
 int adj[105][105];
 int main() {
-	rep(it,0,50000) {
+	for (int it = 0; it < (50000); ++it) {
 		bumpalloc.reset();
 		int n = (rand()%20)+1;
 		int density = rand() % 101;
 		int r = rand()%n;
 		int cnt = 0;
 		vector<Edge> edges;
-		rep(i,0,n)
-			rep(j,0,n){
+		for (int i = 0; i < (n); ++i)
+			for (int j = 0; j < (n); ++j){
 				if (i==j) continue;
 				if (rand() % 100 >= density) continue;
 				int weight = rand()%100;
@@ -137,20 +137,20 @@ int main() {
 			}
 			ll sum = 0;
 			vector<vi> ch(n);
-			rep(i,0,n) {
+			for (int i = 0; i < (n); ++i) {
 				if (i == r) assert(par[i] == -1);
 				else {
 					assert(par[i] != -1);
 					sum += adj[par[i]][i];
-					ch[par[i]].push_back(i);
+					ch[par[i]].eb(i);
 				}
 			}
 			assert(sum == ans1);
 			vi seen(n), q = {r};
-			rep(qi,0,sz(q)) {
+			for (int qi = 0; qi < (sz(q)); ++qi) {
 				int s = q[qi];
 				if (!seen[s]++)
-					for(auto &x: ch[s]) q.push_back(x);
+					for(auto &x: ch[s]) q.eb(x);
 			}
 			assert(count(all(seen), 0) == 0);
 		}

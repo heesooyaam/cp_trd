@@ -1,10 +1,9 @@
 /**
  * Author: heesooyaam, adapted for cp_trd
  * Source: AlgoTemplates/Math/FactorizationSieve.cpp
- * Description: Linear sieve on [1,n]. lp[x] is the smallest
- *  prime divisor (lp[1]=1); primes contains exactly the primes.
- *  factor(x) returns (prime, exponent) pairs in increasing order.
- * Time: Build O(n), factor O(\log x). Memory O(n).
+ * Description: Линейное решето на [1,n]. lp[x] — минимальный простой делитель, lp[1]=1; primes — простые. factor(x) возвращает пары (простой,степень) по возрастанию простого.
+
+ * Time: Построение O(n), factor O(\log x). Память O(n).
  * Status: Stress-tested against trial division.
  */
 #pragma once
@@ -14,9 +13,11 @@ struct factorization_sieve_t {
         assert(n >= 1);
         lp[1] = 1;
         for (int i = 2; i < n + 1; ++i) {
-            if (!lp[i]) lp[i] = i, primes.push_back(i);
+            if (!lp[i])
+                lp[i] = i, primes.eb(i);
             for (int p : primes) {
-                if (p > lp[i] || p > n / i) break;
+                if (p > lp[i] || p > n / i)
+                    break;
                 lp[i * p] = p;
             }
         }
@@ -31,7 +32,7 @@ struct factorization_sieve_t {
                 x /= p;
                 ++e;
             } while (x % p == 0);
-            res.push_back({p, e});
+            res.eb(p, e);
         }
         return res;
     }

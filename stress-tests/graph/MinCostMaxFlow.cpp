@@ -48,19 +48,19 @@ ll MinCostMatching(const vector<vd>& cost, vi& L, vi& R) {
 	vi dad(n), seen(n);
 
 	/// construct dual feasible solution
-	rep(i,0,n) {
+	for (int i = 0; i < (n); ++i) {
 		u[i] = cost[i][0];
-		rep(j,1,n) u[i] = min(u[i], cost[i][j]);
+		for (int j = 1; j < (n); ++j) u[i] = min(u[i], cost[i][j]);
 	}
-	rep(j,0,n) {
+	for (int j = 0; j < (n); ++j) {
 		v[j] = cost[0][j] - u[0];
-		rep(i,1,n) v[j] = min(v[j], cost[i][j] - u[i]);
+		for (int i = 1; i < (n); ++i) v[j] = min(v[j], cost[i][j] - u[i]);
 	}
 
 	/// find primal solution satisfying complementary slackness
 	L = vi(n, -1);
 	R = vi(n, -1);
-	rep(i,0,n) rep(j,0,n) {
+	for (int i = 0; i < (n); ++i) for (int j = 0; j < (n); ++j) {
 		if (R[j] != -1) continue;
 		if (zero(cost[i][j] - u[i] - v[j])) {
 			L[i] = j;
@@ -75,20 +75,20 @@ ll MinCostMatching(const vector<vd>& cost, vi& L, vi& R) {
 		while (L[s] != -1) s++;
 		fill(all(dad), -1);
 		fill(all(seen), 0);
-		rep(k,0,n)
+		for (int k = 0; k < (n); ++k)
 			dist[k] = cost[s][k] - u[s] - v[k];
 
 		int j = 0;
 		for (;;) { /// find closest
 			j = -1;
-			rep(k,0,n){
+			for (int k = 0; k < (n); ++k){
 				if (seen[k]) continue;
 				if (j == -1 || dist[k] < dist[j]) j = k;
 			}
 			seen[j] = 1;
 			int i = R[j];
 			if (i == -1) break;
-			rep(k,0,n) { /// relax neighbors
+			for (int k = 0; k < (n); ++k) { /// relax neighbors
 				if (seen[k]) continue;
 				auto new_dist = dist[j] + cost[i][k] - u[i] - v[k];
 				if (dist[k] > new_dist) {
@@ -99,7 +99,7 @@ ll MinCostMatching(const vector<vd>& cost, vi& L, vi& R) {
 		}
 
 		/// update dual variables
-		rep(k,0,n) {
+		for (int k = 0; k < (n); ++k) {
 			if (k == j || !seen[k]) continue;
 			auto w = dist[k] - dist[j];
 			v[k] += w, u[R[k]] -= w;
@@ -118,7 +118,7 @@ ll MinCostMatching(const vector<vd>& cost, vi& L, vi& R) {
 	}
 
 	auto value = vd(1)[0];
-	rep(i,0,n) value += cost[i][L[i]];
+	for (int i = 0; i < (n); ++i) value += cost[i][L[i]];
 	return value;
 }
 
@@ -127,7 +127,7 @@ void testPerf() {
 	int N = 500, E = 10000, CAPS = 100, COSTS = 100000;
 	MCMF mcmf(N);
 	int s = 0, t = 1;
-	rep(i,0,E) {
+	for (int i = 0; i < (E); ++i) {
 		int a = rand() % N;
 		int b = rand() % N;
 		int cap = rand() % CAPS;
@@ -142,19 +142,19 @@ void testPerf() {
 }
 
 void testMatching() {
-	rep(it,0,100000) {
+	for (int it = 0; it < (100000); ++it) {
 		size_t last = ::i;
 		int N = rand() % 10, M = rand() % 10;
 		int NM = max(N, M);
 		vector<vd> co(NM, vd(NM));
-		rep(i,0,N) rep(j,0,M) co[i][j] = (rand() % 10) + 2;
+		for (int i = 0; i < (N); ++i) for (int j = 0; j < (M); ++j) co[i][j] = (rand() % 10) + 2;
 		vi L, R;
 		ll v = MinCostMatching(co, L, R);
 		int S = N+M, T = N+M+1;
 		MCMF mcmf(N+M+2);
-		rep(i,0,N) mcmf.addEdge(S, i, 1, 0);
-		rep(i,0,M) mcmf.addEdge(N+i, T, 1, 0);
-		rep(i,0,N) rep(j,0,M) mcmf.addEdge(i, N+j, 1, co[i][j] - 2);
+		for (int i = 0; i < (N); ++i) mcmf.addEdge(S, i, 1, 0);
+		for (int i = 0; i < (M); ++i) mcmf.addEdge(N+i, T, 1, 0);
+		for (int i = 0; i < (N); ++i) for (int j = 0; j < (M); ++j) mcmf.addEdge(i, N+j, 1, co[i][j] - 2);
 		mcmf.setpi(S);
 		auto pa = mcmf.maxflow(S, T);
 		assert(pa.first == min(N, M));
@@ -167,16 +167,16 @@ void testNeg() {
 	const int ITS = 1000000;
 	int ed[100][100];
 	int negs = 0;
-	rep(it,0,ITS) {
+	for (int it = 0; it < (ITS); ++it) {
 		size_t lasti = ::i;
 		int N = rand() % 7 + 2;
 		int M = rand() % 17;
 		int S = 0, T = 1;
 		MCMF mcmf(N);
 		MCMF2 mcmf2(N);
-		rep(i,0,N) rep(j,0,N) ed[i][j] = 0;
+		for (int i = 0; i < (N); ++i) for (int j = 0; j < (N); ++j) ed[i][j] = 0;
 		bool anyneg = false;
-		rep(eid,0,M) {
+		for (int eid = 0; eid < (M); ++eid) {
 			int i = rand() % N, j = rand() % N;
 			if (i != j && !ed[i][j]) {
 				ed[i][j] = 1;

@@ -1,33 +1,40 @@
 /**
- * Author: chilli, Takanori MAEHARA
+ * Author: chilli, Takanori MAEHARA; адаптация cp_trd
  * Date: 2020-04-03
  * License: CC0
  * Source: https://github.com/spaghetti-source/algorithm/blob/master/graph/gomory_hu_tree.cc#L102
- * Description: Given a list of edges representing an undirected flow graph,
- * returns edges of the Gomory-Hu tree. The max flow between any pair of
- * vertices is given by minimum edge weight along the Gomory-Hu tree path.
- * Time: $O(V)$ Flow Computations
- * Status: Tested on CERC 2015 J, stress-tested
- *
- * Details: The implementation used here is not actually the original
- * Gomory-Hu, but Gusfield's simplified version: "Very simple methods for all
- * pairs network flow analysis". PushRelabel is used here, but any flow
- * implementation that supports `leftOfMinCut` also works.
+ * Description: Дерево Гомори — Ху для запросов максимального потока
+ *  между любыми двумя различными вершинами неориентированного графа.
+ *  Вход: n вершин 0..n-1 и рёбра \{u,v,capacity\}, capacity >= 0.
+ *  Каждое неориентированное ребро передавать один раз; кратные допустимы.
+ *  Выход: n-1 рёбер дерева \{u,v,weight\}. Ответ для пары u,v — минимум
+ *  веса на пути в дереве: обход за O(n), либо подъёмы с минимумом за
+ *  O(\log n) на запрос. Для разных компонент ответ 0.
+ *  Пример: веса пути 8,3,6 дают поток 3. Для одного запроса достаточно Диница.
+ * Usage: auto tree = gomory_hu(n, edges);
+ * Time: n-1 запусков Диница
+ * Status: Сравнение всех пар с независимым потоком на случайных графах.
  */
 #pragma once
+#include "TeamDinic.h"
 
-#include "PushRelabel.h"
-
-typedef array<ll, 3> Edge;
-vector<Edge> gomoryHu(int N, vector<Edge> ed) {
-	vector<Edge> tree;
-	vi par(N);
-	rep(i,1,N) {
-		PushRelabel D(N); // Dinic also works
-		for (Edge t : ed) D.addEdge(t[0], t[1], t[2], t[2]);
-		tree.push_back({i, par[i], D.calc(i, par[i])});
-		rep(j,i+1,N)
-			if (par[j] == par[i] && D.leftOfMinCut(j)) par[j] = i;
-	}
-	return tree;
+using flow_edge = array<ll, 3>;
+vector<flow_edge> gomory_hu(int n, const vector<flow_edge> &edges) {
+    vector<flow_edge> tree;
+    vector<int> parent(n);
+    for (int i = 1; i < n; ++i) {
+        dinic flow(n);
+        for (auto [u, v, cap] : edges) {
+            flow.add_edge(int(u), int(v), cap);
+            flow.add_edge(int(v), int(u), cap);
+        }
+        ll value = flow.max_flow(i, parent[i]);
+        tree.eb(flow_edge{i, parent[i], value});
+        // Последний bfs отмечает сторону i минимального разреза.
+        for (int j = i + 1; j < n; ++j) {
+            if (parent[j] == parent[i] && flow.level[j] != -1)
+                parent[j] = i;
+        }
+    }
+    return tree;
 }

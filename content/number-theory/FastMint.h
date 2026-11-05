@@ -1,10 +1,9 @@
 /**
  * Author: heesooyaam (source), adapted for cp_trd
  * Source: AlgoTemplates/Math/fast_mint.cpp; Montgomery reduction
- * Description: Lazy Montgomery mint; odd compile-time modulus
- *  1 < M < $2^{30}$. inverse/division requires gcd(value,M)=1.
- *  get() returns [0,M). Default modulus is 998244353.
- * Time: O(1) arithmetic, O(\log M) inverse.
+ * Description: Быстрый mint Монтгомери: нечётный модуль времени компиляции $1<M<2^{30}$. Деление/inverse требует gcd(value,M)=1. get() возвращает [0,M). Модуль по умолчанию 998244353.
+
+ * Time: O(1) арифметика, O(\log M) обратный.
  * Status: Randomized arithmetic tests, prime and composite moduli.
  */
 #pragma once
@@ -15,7 +14,8 @@ template <uint32_t M> struct LazyMontgomeryModInt {
     static_assert(M > 1 && M < (1u << 30) && (M & 1));
     static constexpr u32 get_r() {
         u32 x = M;
-        for (int i = 0; i < 4; ++i) x *= 2 - M * x;
+        for (int i = 0; i < 4; ++i)
+            x *= 2 - M * x;
         return x;
     }
     static constexpr u32 r = get_r(), n2 = -u64(M) % M;
@@ -32,11 +32,13 @@ template <uint32_t M> struct LazyMontgomeryModInt {
     }
     static constexpr u32 get_mod() { return M; }
     mint &operator+=(mint b) {
-        if (int32_t(a += b.a - 2 * M) < 0) a += 2 * M;
+        if (int32_t(a += b.a - 2 * M) < 0)
+            a += 2 * M;
         return *this;
     }
     mint &operator-=(mint b) {
-        if (int32_t(a -= b.a) < 0) a += 2 * M;
+        if (int32_t(a -= b.a) < 0)
+            a += 2 * M;
         return *this;
     }
     mint &operator*=(mint b) {
@@ -54,7 +56,8 @@ template <uint32_t M> struct LazyMontgomeryModInt {
     mint pow(u64 e) const {
         mint res = 1, b = *this;
         for (; e; e >>= 1, b *= b)
-            if (e & 1) res *= b;
+            if (e & 1)
+                res *= b;
         return res;
     }
     mint inverse() const {

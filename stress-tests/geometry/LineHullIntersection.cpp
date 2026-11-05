@@ -65,12 +65,12 @@ int segmentIntersection(const P& s1, const P& e1,
 
 int main() {
 	srand(2);
-	rep(it,0,1000000) {
+	for (int it = 0; it < (1000000); ++it) {
 		// cout<<endl;
 		// cout<<"it: "<<it<<endl;
 		int N = rand() % 15;
 		vector<P> ps2;
-		rep(i,0,N) ps2.emplace_back(rand() % 20 - 10, rand() % 20 - 10);
+		for (int i = 0; i < (N); ++i) ps2.eb(rand() % 20 - 10, rand() % 20 - 10);
 		vector<P> ps = convexHull(ps2);
 		if (ps.empty()) continue;
 		P p{rand() % 20 - 10, rand() % 20 - 10};
@@ -98,7 +98,7 @@ int main() {
 
 		int any = 0, gen = 0, corner = -1, waspar = 0;
 		vector<pair<Point<double>, int>> hits;
-		rep(iter,0,2) rep(i,0,N) {
+		for (int iter = 0; iter < (2); ++iter) for (int i = 0; i < (N); ++i) {
 			Point<double> r1, r2;
 			int j = (i+1) % N;
 			int qu = segmentIntersection(farp, farq, ps[i], ps[j], r1, r2);
@@ -120,7 +120,7 @@ int main() {
 					if (iter == 1 && !waspar && !(r.first == i || r.second == i)) FAIL();
 					if (iter == 0) corner = i;
 					if (iter == 0) gen++;
-					if (iter == 0) hits.emplace_back(r1, i);
+					if (iter == 0) hits.eb(r1, i);
 				}
 				else if (r1 == ps[j]) {
 					if (!(r.first == i || r.second == i || r.first == j || r.second == j)) FAIL();
@@ -131,7 +131,7 @@ int main() {
 				else {
 					if (!(r.first == i || r.second == i)) FAIL();
 					if (iter == 0) gen = 10;
-					if (iter == 0) hits.emplace_back(r1, i);
+					if (iter == 0) hits.eb(r1, i);
 				}
 				any = 1;
 			}

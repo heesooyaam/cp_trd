@@ -8,7 +8,7 @@ int main1() {
 	// Random constraints, unsolvable
 	{
 		TwoSat ts(N);
-		rep(i,0,M) {
+		for (int i = 0; i < (M); ++i) {
 			int r = rand();
 			int s = r;
 			r >>= 2;
@@ -23,9 +23,9 @@ int main1() {
 	// Random solvable instance
 	{
 		vector<bool> v(N);
-		rep(i,0,N) v[i] = rand() & (1 << 20);
+		for (int i = 0; i < (N); ++i) v[i] = rand() & (1 << 20);
 		TwoSat ts(N);
-		rep(i,0,M) {
+		for (int i = 0; i < (M); ++i) {
 			int r = rand();
 			int s = r;
 			r >>= 2;
@@ -56,13 +56,13 @@ int main() {
 	main1();
 	main2();
 	const int N = 100, M = 400;
-	rep(it,0,100) {
+	for (int it = 0; it < (100); ++it) {
 		vector<bool> v(N);
-		rep(i,0,N) v[i] = rand() & (1 << 20);
+		for (int i = 0; i < (N); ++i) v[i] = rand() & (1 << 20);
 		TwoSat ts(N);
 		vector<vi> atm;
 		vi r;
-		rep(i,0,M) {
+		for (int i = 0; i < (M); ++i) {
 			if (rand()%100 < 5) {
 				int r = rand();
 				int s = r;
@@ -75,19 +75,19 @@ int main() {
 			} else {
 				int k = rand() % 4 + 1;
 				r.clear();
-				rep(ki,0,k-1) {
+				for (int ki = 0; ki < (k-1); ++ki) {
 					int a = rand() % N;
-					r.push_back(v[a] ? ~a : a);
+					r.eb(v[a] ? ~a : a);
 				}
-				r.push_back(rand() % (2*N) - N);
+				r.eb(rand() % (2*N) - N);
 				shuffle_vec(r);
 				ts.atMostOne(r);
-				atm.push_back(r);
+				atm.eb(r);
 			}
 		}
 		assert(ts.solve());
 		int to = 0;
-		rep(i,0,N) to += (ts.values[i] == v[i]);
+		for (int i = 0; i < (N); ++i) to += (ts.values[i] == v[i]);
 		for(auto &r: atm) {
 			int co = 0;
 			for(auto &x: r) co += (ts.values[max(x, ~x)] == (x >= 0));

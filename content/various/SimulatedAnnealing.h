@@ -1,11 +1,10 @@
 /**
  * Author: Andrew-A-13, generalized for cp_trd
  * Source: Templates/Garbage/Отжиг
- * Description: Minimize cost over permutations using random swaps.
- *  Returns the best visited state, not the last state.
- *  Tune temperatures to cost differences, try independent restarts.
- *  cost must be finite; there is no guarantee of the optimum.
- * Time: O(steps * (cost evaluation + occasional state copy)).
+ * Description: Минимизирует стоимость перестановки случайными обменами. Возвращает лучшее посещённое состояние. Температуры подбирать под разности стоимости, делать независимые перезапуски. cost должен быть конечным; оптимум не гарантируется.
+
+ * Time: O(steps \cdot (T_{cost}+n)): с учётом копирования состояния.
+
  * Status: Permutation and best-state invariants tested.
  */
 #pragma once
@@ -17,7 +16,8 @@ anneal(vector<int> p, Cost cost, int steps, double start_temp,
     double cur = cost(p), best_cost = cur;
     vector<int> best = p;
     int n = int(p.size());
-    if (n < 2) return {best_cost, best};
+    if (n < 2)
+        return {best_cost, best};
     uniform_int_distribution<int> index(0, n - 1);
     uniform_real_distribution<double> real(0, 1);
     for (int step = 0; step < steps; ++step) {
@@ -27,12 +27,12 @@ anneal(vector<int> p, Cost cost, int steps, double start_temp,
         int i = index(rng), j = index(rng);
         swap(p[i], p[j]);
         double next = cost(p);
-        if (next <= cur ||
-            real(rng) < exp((cur - next) / temp))
+        if (next <= cur || real(rng) < exp((cur - next) / temp))
             cur = next;
         else
             swap(p[i], p[j]);
-        if (cur < best_cost) best_cost = cur, best = p;
+        if (cur < best_cost)
+            best_cost = cur, best = p;
     }
     return {best_cost, best};
 }

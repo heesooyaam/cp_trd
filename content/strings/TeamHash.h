@@ -1,15 +1,10 @@
 /**
  * Author: heesooyaam, adapted for cp_trd (C++20)
  * Source: AlgoTemplates/Strings/hash.cpp
- * Description: Two polynomial hashes, optionally both directions.
- *  Queries are 1-based inclusive, also when cur\_ind=false
- *  (zero-based input container). Empty range is [l,l-1].
- *  rev is Horner order; dir is ascending powers (source naming).
- *  Hashes compare across objects with identical template parameters.
- *  Values are residues; unequal data can collide. Use randomized
- *  bases for adversarial input. Query lengths are also compared.
+ * Description: Два полиномиальных хеша, при необходимости в обе стороны. Запросы по [l,r] с индексацией от 1, даже при cur\_ind=false (вход от 0). Пустой отрезок [l,l-1]. rev — схема Горнера, dir — возрастающие степени. Сравнение объектов требует одинаковых параметров шаблона; длины тоже сравниваются. Возможны коллизии; на враждебных тестах выбирать случайные основания. Элементы сравниваются по остаткам.
+
  * Usage: string_hasher h(s, true, false); h.is_palindrome(1,n);
- * Time: Build O(n), queries O(1), memory O(n).
+ * Time: Построение O(n), запросы O(1), память O(n).
  * Status: Random substrings, palindromes, signed arrays, empty input.
  */
 #pragma once
@@ -27,7 +22,8 @@ struct hasher {
         int length, shift;
         hash_t h{};
         bool operator==(const hash_value &other) const {
-            if (length != other.length) return false;
+            if (length != other.length)
+                return false;
             int delta = abs(shift - other.shift);
             const auto &a = shift < other.shift ? h : other.h;
             const auto &b = shift < other.shift ? other.h : h;
@@ -49,7 +45,7 @@ struct hasher {
             auto next = powers.back();
             for (int j = 0; j < pts; ++j)
                 next[j] = next[j] * base[j] % mod[j];
-            powers.push_back(next);
+            powers.eb(next);
         }
         for (int i = 1; i <= n; ++i) {
             ll value = data[i - !cur_ind];
@@ -63,20 +59,20 @@ struct hasher {
                 rev[i][j] =
                     (rev[i - 1][j] * base[j] + x) % mod[j];
                 if (both)
-                    dir[i][j] = (dir[i - 1][j] +
-                                 x * powers[i - 1][j]) %
-                                mod[j];
+                    dir[i][j] =
+                        (dir[i - 1][j] + x * powers[i - 1][j]) %
+                        mod[j];
             }
         }
     }
     hash_value get_rev_hash(int l, int r) const {
         hash_value h{r - l + 1, 0, {}};
         for (int j = 0; j < pts; ++j)
-            h.h[j] = (rev[r][j] -
-                      rev[l - 1][j] * powers[r - l + 1][j] %
-                          mod[j] +
-                      mod[j]) %
-                     mod[j];
+            h.h[j] =
+                (rev[r][j] -
+                 rev[l - 1][j] * powers[r - l + 1][j] % mod[j] +
+                 mod[j]) %
+                mod[j];
         return h;
     }
     hash_value get_dir_hash(int l, int r) const {

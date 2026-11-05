@@ -1,9 +1,8 @@
 /**
  * Author: Andrew-A-13, refactored for cp_trd
  * Source: Templates/Потоки/Kuhn
- * Description: g[v] lists right-side neighbors of left vertex v.
- *  Right vertices are 0..m-1 independently of left indices.
- *  match[right] is its matched left vertex, or -1.
+ * Description: g[v] — правые соседи левой вершины v. Правая доля индексируется 0..m-1 независимо от левой. match[r] — её левая пара либо -1.
+
  * Time: O(VE)
  * Status: Stress-tested against exhaustive matching.
  */
@@ -12,7 +11,8 @@ struct kuhn {
     vector<int> match, used;
     int timer = 0;
     bool dfs(int v, const vector<vector<int>> &g) {
-        if (used[v] == timer) return false;
+        if (used[v] == timer)
+            return false;
         used[v] = timer;
         for (int u : g[v]) {
             if (match[u] == -1 || dfs(match[u], g)) {

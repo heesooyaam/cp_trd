@@ -1,6 +1,13 @@
 #include <bits/stdc++.h>
 #include <cassert>
 using namespace std;
+#ifndef all
+#define all(x) begin(x), end(x)
+#endif
+#ifndef eb
+#define eb(...) emplace_back(__VA_ARGS__)
+#endif
+
 using ll=long long;
 #include "../../content/data-structures/OrderStatisticTree.h"
 int main() {
@@ -33,8 +40,8 @@ int main() {
     for(int x:{1,2,3,4,5})a.insert(x);
     b.insert(100);
     a.split(3,b);
-    assert(vector<int>(a.begin(),a.end())==vector<int>({1,2,3}));
-    assert(vector<int>(b.begin(),b.end())==vector<int>({4,5}));
+    assert(vector<int>(all(a))==vector<int>({1,2,3}));
+    assert(vector<int>(all(b))==vector<int>({4,5}));
     a.join(b);
     assert(a.size()==5&&b.empty());
     a.swap(b);

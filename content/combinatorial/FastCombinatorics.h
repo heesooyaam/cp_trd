@@ -1,10 +1,9 @@
 /**
  * Author: heesooyaam, adapted for cp_trd
  * Source: AlgoTemplates/Math/fast_mint.cpp
- * Description: Factorials and binomial coefficients modulo prime
- *  mint::get\_mod(). Requires 0 <= n < modulus. C(n,k)=0 for
- *  k outside [0,n]. Reuse one object; build at maximum n once.
- * Time: init O(n+\log mod), C O(1).
+ * Description: Факториалы и биномиальные коэффициенты по простому модулю mint::get\_mod(). Требуется 0<=n<mod. C(n,k)=0 при k вне [0,n]. Предвычислить один раз до максимального n.
+
+ * Time: построение O(n+\log mod), C O(1).
  * Status: Tested against Pascal's triangle.
  */
 #pragma once

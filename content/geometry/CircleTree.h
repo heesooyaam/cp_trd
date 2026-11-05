@@ -1,13 +1,9 @@
 /**
  * Author: heesooyaam, refactored for cp_trd
  * Source: AlgoTemplates/Other/circles_to_tree_scanline.cpp
- * Description: Containment forest of circles with positive radii.
- *  Boundaries must be pairwise disjoint: no intersections,
- *  tangencies or duplicates. Indices are 0-based; parent=-1
- *  means an outermost circle. children contains directed edges.
- *  Uses long double: separation must exceed rounding error.
- *  Do not enable fast-math. See doc/circle-tree.md for details.
- * Time: O(n \log n) time, O(n) memory.
+ * Description: Лес вложенности окружностей положительного радиуса. Границы попарно не пересекаются, не касаются и не совпадают. Индексы от 0; parent=-1 у внешних окружностей, children — дети. Используется long double: зазоры должны превосходить ошибку округления. Не включать fast-math. Пояснение: doc/circle-tree.md.
+
+ * Time: O(n \log n) время, O(n) память.
  * Status: Random laminar families vs quadratic containment.
  */
 #pragma once
@@ -21,15 +17,15 @@ struct circle_tree {
     circle_tree(vector<circle> data)
         : circles(std::move(data)), parent(circles.size(), -1),
           children(circles.size()) {
-        using arc = pair<int, int>; // id, 0=lower, 1=upper
+        using arc = pair<int, int>; // id, 0=нижняя дуга, 1=верхняя
         vector<tuple<long double, int, int>> events;
         for (int i = 0; i < int(circles.size()); ++i) {
             auto [x, y, r] = circles[i];
             assert(r > 0);
-            events.emplace_back(x - r, 1, i); // enter
-            events.emplace_back(x + r, 0, i); // exit first
+            events.eb(x - r, 1, i); // вход
+            events.eb(x + r, 0, i); // выход обрабатывается первым
         }
-        sort(events.begin(), events.end());
+        sort(all(events));
         long double scan_x = 0;
         auto height = [&](arc a) {
             auto [x, y, r] = circles[a.first];
@@ -38,7 +34,8 @@ struct circle_tree {
             return y + (a.second ? dy : -dy);
         };
         auto cmp = [&](arc a, arc b) {
-            if (a.first == b.first) return a.second < b.second;
+            if (a.first == b.first)
+                return a.second < b.second;
             auto y1 = height(a), y2 = height(b);
             return y1 != y2 ? y1 < y2 : a < b;
         };
@@ -58,9 +55,9 @@ struct circle_tree {
                 parent[id] = upper ? next : parent[next];
             }
             if (parent[id] == -1)
-                roots.push_back(id);
+                roots.eb(id);
             else
-                children[parent[id]].push_back(id);
+                children[parent[id]].eb(id);
             where[id][0] = active.emplace(id, 0).first;
             where[id][1] = active.emplace(id, 1).first;
         }

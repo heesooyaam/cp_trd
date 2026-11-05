@@ -1,5 +1,6 @@
-\subsection{GCC pragmas: bitsets and tight loops}
+\subsection{Прагмы GCC: битсеты и циклы}
 \begingroup
+\footnotesize
 \let\latintexttt\texttt
 \renewcommand{\texttt}[1]{{\fontencoding{T1}\selectfont\latintexttt{#1}}}
 \begin{otherlanguage}{russian}
@@ -26,7 +27,7 @@
 полный набор на максимальном тесте.
 \texttt{bmi,bmi2,lzcnt} добавляют отдельные битовые инструкции;
 для обычного bitset не обязательны.
-\texttt{fma} относится к вещественному multiply-add, не к битсетам.
+\texttt{fma} относится к совмещённому умножению и сложению, не к битсетам.
 
 \textbf{Ограничения.}
 Неподдерживаемый target может дать Illegal instruction на судье;
@@ -42,7 +43,7 @@ NaN/Inf и порядок вычислений. Для геометрии осо
 #pragma GCC push_options
 #pragma GCC optimize("O3")
 #pragma GCC target("popcnt")
-// definitions of the selected functions
+// определения выбранных функций
 #pragma GCC pop_options
 \end{lstlisting}
 Для одного цикла: \texttt{\#pragma GCC unroll 4} перед ним.
@@ -56,9 +57,9 @@ bitset. Размер блока зависит от ABI и библиотеки.
 Для битсетов \texttt{\& | \^{} << >>} работают блоками, а
 \texttt{operator[]} в цикле перебирает отдельные биты.
 {\scriptsize Источники:
-\href{https://codeforces.com/blog/entry/129283}{CF: GCC pragmas},
+\href{https://codeforces.com/blog/entry/129283}{CF: прагмы GCC},
 \href{https://codeforces.com/blog/entry/77480}{CF: bitset},
-\href{https://gcc.gnu.org/onlinedocs/gcc/Function-Specific-Option-Pragmas.html}{GCC manual}.
+\href{https://gcc.gnu.org/onlinedocs/gcc/Function-Specific-Option-Pragmas.html}{документация GCC}.
 Подробнее: \texttt{doc/pragmas.md}.}
 
 \end{otherlanguage}

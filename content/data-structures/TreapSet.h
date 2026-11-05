@@ -1,10 +1,8 @@
 /**
  * Author: cp_trd, inspired by Andrew-A-13's Better Treap
- * Description: Ordered multiset: insert, erase one copy, rank
- *  (number strictly less than x), kth (0-based, valid k).
- *  Stores duplicate counts; no key+1 split, so LLONG\_MAX works.
- *  Pool memory is not reclaimed after erasing a distinct key.
- * Time: Expected O(\log n) per operation.
+ * Description: Декартово мультимножество: вставка, удаление одной копии, число ключей строго меньше x, kth с индексацией от 0. Повторы хранятся счётчиком. Поддерживается LLONG\_MAX. Память удалённых узлов не переиспользуется.
+
+ * Time: Ожидаемое O(\log n) на операцию.
  * Status: Random operations checked against std::multiset.
  */
 #pragma once
@@ -24,7 +22,8 @@ struct treap_set {
             size(tree[v].l) + size(tree[v].r) + tree[v].cnt;
     }
     int merge(int l, int r) {
-        if (!l || !r) return l | r;
+        if (!l || !r)
+            return l | r;
         if (tree[l].priority > tree[r].priority) {
             tree[l].r = merge(tree[l].r, r);
             update(l);
@@ -49,15 +48,14 @@ struct treap_set {
     }
     int insert(int v, ll x) {
         if (!v) {
-            tree.push_back({x, uint32_t(rng()), 0, 0, 1, 1});
+            tree.eb(x, uint32_t(rng()), 0, 0, 1, 1);
             return int(tree.size()) - 1;
         }
         if (x == tree[v].key)
             ++tree[v].cnt;
         else {
             bool left = x < tree[v].key;
-            int child =
-                insert(left ? tree[v].l : tree[v].r, x);
+            int child = insert(left ? tree[v].l : tree[v].r, x);
             if (left)
                 tree[v].l = child;
             else
@@ -69,7 +67,8 @@ struct treap_set {
         return v;
     }
     int erase(int v, ll x) {
-        if (!v) return 0;
+        if (!v)
+            return 0;
         if (tree[v].key == x) {
             if (--tree[v].cnt == 0)
                 return merge(tree[v].l, tree[v].r);

@@ -23,11 +23,11 @@ struct LCA {
 		while (!q.empty()) {
 			tie(v, p, d, di) = q.back();
 			q.pop_back();
-			if (d) ret.emplace_back(d, p);
+			if (d) ret.eb(d, p);
 			time[v] = T++;
 			dist[v] = di;
 			for(auto &e: C[v]) if (e.first != p)
-				q.emplace_back(e.first, v, d+1, di + e.second);
+				q.eb(e.first, v, d+1, di + e.second);
 		}
 		return ret;
 	}
@@ -58,8 +58,8 @@ void test_n(int n, int num) {
 		vector<vi> tree(n);
 		vector<vector<pair<int, int>>> oldTree(n);
 		for (auto i: graph) {
-			tree[i.first].push_back(i.second);
-			tree[i.second].push_back(i.first);
+			tree[i.first].eb(i.second);
+			tree[i.second].eb(i.first);
 			oldTree[i.first].push_back({i.second, 1});
 			oldTree[i.second].push_back({i.first, 1});
 		}

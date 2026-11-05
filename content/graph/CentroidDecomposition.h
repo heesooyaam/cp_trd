@@ -1,10 +1,8 @@
 /**
  * Author: cp_trd, inspired by Andrew-A-13's Centroid1
- * Description: Centroid parent for every vertex of a tree;
- *  root has parent=-1. Removed vertices split components.
- *  Extend build at the marked line to process paths through c.
- *  Iterative component traversal avoids a depth-n size DFS.
- * Time: O(n \log n), memory O(n).
+ * Description: Родители в центроидном дереве; у корня -1. Удаление центроида разделяет компоненты. В отмеченном месте build добавлять обработку путей через c. Обход компоненты итеративный, без рекурсии глубины n.
+
+ * Time: O(n \log n), память O(n).
  * Status: Balance and centroid-parent tree checked on random trees.
  */
 #pragma once
@@ -16,7 +14,8 @@ struct centroid_decomposition {
         : graph(std::move(g)), parent(graph.size(), -1),
           size(graph.size()), prev(graph.size()),
           removed(graph.size()) {
-        if (!graph.empty()) build(0, -1);
+        if (!graph.empty())
+            build(0, -1);
     }
     void build(int start, int par) {
         vector<int> order{start};
@@ -25,7 +24,7 @@ struct centroid_decomposition {
             int v = order[i];
             for (int u : graph[v]) {
                 if (!removed[u] && u != prev[v])
-                    prev[u] = v, order.push_back(u);
+                    prev[u] = v, order.eb(u);
             }
         }
         int total = int(order.size()), c = -1;
@@ -39,12 +38,14 @@ struct centroid_decomposition {
                 }
             }
             largest = max(largest, total - size[v]);
-            if (largest <= total / 2) c = v;
+            if (largest <= total / 2)
+                c = v;
         }
         parent[c] = par;
-        // Process paths through c here (skip removed vertices).
+        // Обработать пути через c, пропуская удалённые вершины.
         removed[c] = true;
         for (int u : graph[c])
-            if (!removed[u]) build(u, c);
+            if (!removed[u])
+                build(u, c);
     }
 };

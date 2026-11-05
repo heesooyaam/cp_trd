@@ -55,7 +55,7 @@ void test(int n, int q) {
 			swap(pa.first, pa.second);
 	}
 	vi res = mo(queries);
-	rep(i,0,q) {
+	for (int i = 0; i < (q); ++i) {
 		int l = queries[i].first, r = queries[i].second;
 		if (l == r) {
 			assert(res[i] == -1);
@@ -81,7 +81,7 @@ void add(int i, int end) {
 	sum += vals[i];
 	ops++;
 	if (end == 0) path.push_front(i);
-	else path.push_back(i);
+	else path.eb(i);
 }
 void del(int i, int end) {
 	sum -= vals[i];
@@ -113,7 +113,7 @@ vi moTree(vector<array<int, 2>> Q, vector<vi>& ed, int root=0){
 #define K(x) pii(I[x[0]] / blk, I[x[1]] ^ -(I[x[0]] / blk & 1))
 	iota(all(s), 0);
 	sort(all(s), [&](int s, int t){ return K(Q[s]) < K(Q[t]); });
-	for (int qi : s) rep(end,0,2) {
+	for (int qi : s) for (int end = 0; end < (2); ++end) {
 		int &a = pos[end], b = Q[qi][end], i = 0;
 #define step(c) { if (in[c]) del(a, end), in[a] = 0; \
                   else add(c, end), in[c] = 1; a = c; }
@@ -137,16 +137,16 @@ void testTr(int n, int q) {
 		pa[1] = rand() % n;
 	}
 	vi par(n), val(n);
-	rep(i,1,n) par[i] = rand() % i;
-	rep(i,0,n) val[i] = rand() % 1000;
+	for (int i = 1; i < (n); ++i) par[i] = rand() % i;
+	for (int i = 0; i < (n); ++i) val[i] = rand() % 1000;
 	vector<vi> ed(n);
-	rep(i,1,n) ed[par[i]].push_back(i), ed[i].push_back(par[i]);
+	for (int i = 1; i < (n); ++i) ed[par[i]].eb(i), ed[i].eb(par[i]);
 	MoTree::vals = val;
 	MoTree::sum = 0;
 	MoTree::path.clear();
 	vi res = MoTree::moTree(queries, ed);
 	vi seen(n);
-	rep(i,0,q) {
+	for (int i = 0; i < (q); ++i) {
 		// Tree depth is logarithmic, so compute query answers naively
 		int l = queries[i][0], r = queries[i][1];
 		int at = l;
@@ -165,7 +165,7 @@ void testTr(int n, int q) {
 
 int main() {
 	srand(2);
-	rep(it,0,10) rep(n,1,15) rep(q,0,n*n) {
+	for (int it = 0; it < (10); ++it) for (int n = 1; n < (15); ++n) for (int q = 0; q < (n*n); ++q) {
 		testTr(n, q);
 	}
 	testTr(100'000, 100'000);
@@ -174,7 +174,7 @@ int main() {
 	test(100'000, 100'000);
 	test(1000, 100'000);
 	test(100'000, 1000);
-	rep(it,0,10) rep(n,1,15) rep(q,0,n*n) {
+	for (int it = 0; it < (10); ++it) for (int n = 1; n < (15); ++n) for (int q = 0; q < (n*n); ++q) {
 		test(n, q);
 	}
 	cout << "Tests passed!" << endl;

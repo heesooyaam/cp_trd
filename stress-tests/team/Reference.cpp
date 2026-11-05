@@ -1,11 +1,17 @@
 #include <bits/stdc++.h>
 #include <cassert>
 using namespace std;
+#ifndef all
+#define all(x) begin(x), end(x)
+#endif
+#ifndef eb
+#define eb(...) emplace_back(__VA_ARGS__)
+#endif
+
 using ll = long long;
 using vi = vector<int>;
 using pii = pair<int,int>;
 #define sz(x) int((x).size())
-#define rep(i,a,b) for (int i = a; i < (b); ++i)
 #include "../../content/number-theory/FastMint.h"
 #include "../../content/number-theory/FastGcdLcm.h"
 #include "../../content/number-theory/FactorizationSieve.h"
@@ -71,9 +77,9 @@ void math_tests() {
     divisors_sieve_t d(3000), empty(0);
     for (int x=1;x<=3000;++x) {
         vi divisors;
-        for(int y=1;y<=x;++y) if(x%y==0) divisors.push_back(y);
+        for(int y=1;y<=x;++y) if(x%y==0) divisors.eb(y);
         auto range=d.get(x);
-        assert(vi(range.begin(),range.end()) == divisors);
+        assert(vi(all(range)) == divisors);
         ll product=1;
         for(auto [p,e]:f.factor(x)) {
             assert(f.is_prime(p));
@@ -156,8 +162,8 @@ void string_tests() {
         int n=rnd(60);
         string s(n,'\0');
         for(char& c:s) c=char(rnd(it%2 ? 256 : 4));
-        vi expect(n); iota(expect.begin(),expect.end(),0);
-        sort(expect.begin(),expect.end(),[&](int a,int b) {return s.substr(a)<s.substr(b);});
+        vi expect(n); iota(all(expect),0);
+        sort(all(expect),[&](int a,int b) {return s.substr(a)<s.substr(b);});
         vi sa=suffix_array(s);
         assert(sa==expect);
         auto lcp=suffix_lcp(s,sa);
@@ -172,7 +178,7 @@ void string_tests() {
         string_hasher hp(padded,true);
         for(int q=0;q<30;++q) {
             int l=rnd(n+1), r=l+rnd(n-l+1);
-            string p=s.substr(l,r-l), rev=p; reverse(rev.begin(),rev.end());
+            string p=s.substr(l,r-l), rev=p; reverse(all(rev));
             string_hasher local(p,true,false);
             assert(h.get_rev_hash(l+1,r)==local.get_rev_hash(1,int(p.size())));
             assert(h.get_dir_hash(l+1,r)==local.get_dir_hash(1,int(p.size())));
@@ -196,7 +202,7 @@ void structure_tests() {
             int version=rnd(int(roots.size())), pos=rnd(n), delta=rnd(100)-50;
             auto next=data[version]; next[pos]+=delta;
             int root=pst.add(roots[version],pos,delta);
-            data.push_back(next); roots.push_back(root);
+            data.eb(next); roots.eb(root);
             for(int j=0;j<10;++j) {
                 int v=rnd(int(roots.size())),l=rnd(n+1),r=rnd(n+1);
                 if(l>r) swap(l,r);
@@ -235,7 +241,7 @@ void circle_tests() {
         vi seen(n);
         for(int r:tree.roots) {assert(expected[r]==-1); ++seen[r];}
         for(int p=0;p<n;++p) for(int c:tree.children[p]) {assert(expected[c]==p);++seen[c];}
-        assert(all_of(seen.begin(),seen.end(),[](int x){return x==1;}));
+        assert(all_of(all(seen),[](int x){return x==1;}));
     };
     check({}); check({{0,0,1}});
     check({{0,0,10},{0,0,5},{0,0,1},{30,0,3}});
@@ -254,7 +260,7 @@ void circle_tests() {
             };
         generate(0,0,1000,4);
         generate(3000,2000,500,2);
-        shuffle(a.begin(),a.end(),gen);
+        shuffle(all(a),gen);
         check(a);
     }
 }
@@ -274,7 +280,7 @@ void graph_tests() {
         for(int i=0;i<m;++i) {
             int u=rnd(n),v=rnd(n); ll c=rnd(100);
             if(it%10==0) c*=1000000000LL;
-            d.add_edge(u,v,c); es.emplace_back(u,v,c);
+            d.add_edge(u,v,c); es.eb(u,v,c);
         }
         assert(d.max_flow(0,n-1)==brute_cut(n,es));
         assert(d.max_flow(0,n-1)==0);
@@ -282,7 +288,7 @@ void graph_tests() {
     for(int it=0;it<1000;++it) {
         int n=rnd(7), m=rnd(7);
         vector<vi> g(n);
-        for(auto& a:g)for(int j=0;j<m;++j)if(rnd(2))a.push_back(j);
+        for(auto& a:g)for(int j=0;j<m;++j)if(rnd(2))a.eb(j);
         function<int(int,int)> go=[&](int v,int mask) {
             if(v==n)return 0;
             int ans=go(v+1,mask);
@@ -301,7 +307,7 @@ void graph_tests() {
         min_cost_flow flow(n);
         for(int i=0;i<m;++i) {
             int u=rnd(n),v=rnd(n),cap=rnd(3),cost=rnd(5)+pot[v]-pot[u];
-            es.emplace_back(u,v,cap,cost); flow.add_edge(u,v,cap,cost);
+            es.eb(u,v,cap,cost); flow.add_edge(u,v,cap,cost);
         }
         pair<ll,ll> best{0,0}; vector<int> balance(n);
         function<void(int,ll)> enumerate=[&](int e,ll cost) {
@@ -325,15 +331,15 @@ void graph_tests() {
     for(int it=0;it<300;++it) {
         int n=1+rnd(200);
         vector<vi> g(n);
-        for(int v=1;v<n;++v) {int u=rnd(v);g[u].push_back(v);g[v].push_back(u);}
+        for(int v=1;v<n;++v) {int u=rnd(v);g[u].eb(v);g[v].eb(u);}
         centroid_decomposition cd(g);
         vector<bool> removed(n);
         function<void(int,int)> verify=[&](int start,int par) {
             vi component,stack{start},visited(n);
             visited[start]=1;
             while(!stack.empty()) {
-                int v=stack.back();stack.pop_back();component.push_back(v);
-                for(int u:g[v])if(!removed[u]&&!visited[u])visited[u]=1,stack.push_back(u);
+                int v=stack.back();stack.pop_back();component.eb(v);
+                for(int u:g[v])if(!removed[u]&&!visited[u])visited[u]=1,stack.eb(u);
             }
             int c=-1;
             for(int v:component)if(cd.parent[v]==par){assert(c==-1);c=v;}
@@ -341,7 +347,7 @@ void graph_tests() {
             for(int u:g[c])if(!removed[u]) {
                 vi q{u}; vector<bool> seen(n);seen[u]=true;
                 for(int j=0;j<int(q.size());++j)for(int v:g[q[j]])
-                    if(!removed[v]&&!seen[v])seen[v]=true,q.push_back(v);
+                    if(!removed[v]&&!seen[v])seen[v]=true,q.eb(v);
                 assert(q.size()*2<=component.size());
                 verify(u,c);
             }
@@ -352,11 +358,11 @@ void graph_tests() {
 void anneal_tests() {
     mt19937 rng(337);
     for(int n=0;n<30;++n) {
-        vi p(n);iota(p.begin(),p.end(),0);reverse(p.begin(),p.end());
+        vi p(n);iota(all(p),0);reverse(all(p));
         auto cost=[](const vi& p) {double c=0;for(int i=0;i<int(p.size());++i)c+=abs(p[i]-i);return c;};
         auto [best,res]=anneal(p,cost,1000,10,0.01,rng);
         assert(best<=cost(p)&&best==cost(res));
-        sort(res.begin(),res.end());
+        sort(all(res));
         for(int i=0;i<n;++i)assert(res[i]==i);
         assert(anneal(p,cost,0,1,1,rng).second==p);
     }

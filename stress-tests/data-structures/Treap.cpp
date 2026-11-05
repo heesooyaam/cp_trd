@@ -26,15 +26,15 @@ int ra() {
 
 int main() {
 	srand(3);
-	rep(it,0,1000) {
+	for (int it = 0; it < (1000); ++it) {
 		vector<Node> nodes;
 		vi exp;
-		rep(i,0,10) {
-			nodes.emplace_back(i*2+2);
-			exp.emplace_back(i*2+2);
+		for (int i = 0; i < (10); ++i) {
+			nodes.eb(i*2+2);
+			exp.eb(i*2+2);
 		}
 		Node* n = 0;
-		rep(i,0,10)
+		for (int i = 0; i < (10); ++i)
 			n = merge(n, &nodes[i]);
 
 		int v = rand() % 25;
@@ -43,13 +43,13 @@ int main() {
 		assert(left == rleft);
 	}
 
-	rep(it,0,10000) {
+	for (int it = 0; it < (10000); ++it) {
 		vector<Node> nodes;
 		vi exp;
-		rep(i,0,10) nodes.emplace_back(i);
-		rep(i,0,10) exp.emplace_back(i);
+		for (int i = 0; i < (10); ++i) nodes.eb(i);
+		for (int i = 0; i < (10); ++i) exp.eb(i);
 		Node* n = 0;
-		rep(i,0,10)
+		for (int i = 0; i < (10); ++i)
 			n = merge(n, &nodes[i]);
 
 		int i = ra() % 11, j = ra() % 11;

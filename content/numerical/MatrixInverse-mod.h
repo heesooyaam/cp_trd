@@ -13,40 +13,55 @@
 
 #include "../number-theory/ModPow.h"
 
-int matInv(vector<vector<ll>>& A) {
-	int n = sz(A); vi col(n);
-	vector<vector<ll>> tmp(n, vector<ll>(n));
-	rep(i,0,n) tmp[i][i] = 1, col[i] = i;
+int matInv(vector<vector<ll>> &A) {
+    int n = sz(A);
+    vi col(n);
+    vector<vector<ll>> tmp(n, vector<ll>(n));
+    for (int i = 0; i < (n); ++i)
+        tmp[i][i] = 1, col[i] = i;
 
-	rep(i,0,n) {
-		int r = i, c = i;
-		rep(j,i,n) rep(k,i,n) if (A[j][k]) {
-			r = j; c = k; goto found;
-		}
-		return i;
-found:
-		A[i].swap(A[r]); tmp[i].swap(tmp[r]);
-		rep(j,0,n)
-			swap(A[j][i], A[j][c]), swap(tmp[j][i], tmp[j][c]);
-		swap(col[i], col[c]);
-		ll v = modpow(A[i][i], mod - 2);
-		rep(j,i+1,n) {
-			ll f = A[j][i] * v % mod;
-			A[j][i] = 0;
-			rep(k,i+1,n) A[j][k] = (A[j][k] - f*A[i][k]) % mod;
-			rep(k,0,n) tmp[j][k] = (tmp[j][k] - f*tmp[i][k]) % mod;
-		}
-		rep(j,i+1,n) A[i][j] = A[i][j] * v % mod;
-		rep(j,0,n) tmp[i][j] = tmp[i][j] * v % mod;
-		A[i][i] = 1;
-	}
+    for (int i = 0; i < (n); ++i) {
+        int r = i, c = i;
+        for (int j = i; j < (n); ++j)
+            for (int k = i; k < (n); ++k)
+                if (A[j][k]) {
+                    r = j;
+                    c = k;
+                    goto found;
+                }
+        return i;
+    found:
+        A[i].swap(A[r]);
+        tmp[i].swap(tmp[r]);
+        for (int j = 0; j < (n); ++j)
+            swap(A[j][i], A[j][c]), swap(tmp[j][i], tmp[j][c]);
+        swap(col[i], col[c]);
+        ll v = modpow(A[i][i], mod - 2);
+        for (int j = i + 1; j < (n); ++j) {
+            ll f = A[j][i] * v % mod;
+            A[j][i] = 0;
+            for (int k = i + 1; k < (n); ++k)
+                A[j][k] = (A[j][k] - f * A[i][k]) % mod;
+            for (int k = 0; k < (n); ++k)
+                tmp[j][k] = (tmp[j][k] - f * tmp[i][k]) % mod;
+        }
+        for (int j = i + 1; j < (n); ++j)
+            A[i][j] = A[i][j] * v % mod;
+        for (int j = 0; j < (n); ++j)
+            tmp[i][j] = tmp[i][j] * v % mod;
+        A[i][i] = 1;
+    }
 
-	for (int i = n-1; i > 0; --i) rep(j,0,i) {
-		ll v = A[j][i];
-		rep(k,0,n) tmp[j][k] = (tmp[j][k] - v*tmp[i][k]) % mod;
-	}
+    for (int i = n - 1; i > 0; --i)
+        for (int j = 0; j < (i); ++j) {
+            ll v = A[j][i];
+            for (int k = 0; k < (n); ++k)
+                tmp[j][k] = (tmp[j][k] - v * tmp[i][k]) % mod;
+        }
 
-	rep(i,0,n) rep(j,0,n)
-		A[col[i]][col[j]] = tmp[i][j] % mod + (tmp[i][j] < 0)*mod;
-	return n;
+    for (int i = 0; i < (n); ++i)
+        for (int j = 0; j < (n); ++j)
+            A[col[i]][col[j]] =
+                tmp[i][j] % mod + (tmp[i][j] < 0) * mod;
+    return n;
 }

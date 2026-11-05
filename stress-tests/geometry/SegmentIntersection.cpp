@@ -36,7 +36,7 @@ bool eq(P a, P b) {
 	return (a-b).dist()<1e-8;
 }
 int main() {
-	rep(t,0,1000000) {
+	for (int t = 0; t < (1000000); ++t) {
 		const int GRID=6;
 		P a(rand()%GRID, rand()%GRID), b(rand()%GRID, rand()%GRID), c(rand()%GRID, rand()%GRID), d(rand()%GRID, rand()%GRID);
 		P tmp1, tmp2;
@@ -50,7 +50,7 @@ int main() {
 		if (res==1) {
 			assert(eq(*res2.begin(), tmp1));
 		} else if (res==2) {
-			vector<P> a(res2.begin(), res2.end());
+			vector<P> a(all(res2));
 			vector<P> b({tmp1, tmp2});
 			sort(all(b));
 			assert(eq(a[0], b[0]) && eq(a[1],b[1]));

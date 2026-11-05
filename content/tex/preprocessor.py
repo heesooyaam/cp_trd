@@ -126,7 +126,7 @@ def processwithcomments(caption, instream, outstream, listingslang):
                 cline = cline[1:].strip()
                 allow_command = True
             ind = cline.find(':')
-            if allow_command and ind != -1 and ' ' not in cline[:ind] and cline[0].isalpha() and cline[0].isupper():
+            if allow_command and ind != -1 and ' ' not in cline[:ind] and cline[:ind].isascii() and cline[0].isalpha() and cline[0].isupper():
                 if command:
                     if command not in knowncommands:
                         error = error + "Unknown command: " + command + ". "
@@ -162,7 +162,7 @@ def processwithcomments(caption, instream, outstream, listingslang):
     else:
         addref(caption, outstream)
         if commands.get("Description"):
-            out.append(r"\defdescription{%s}" % escape(commands["Description"]))
+            out.append(r"\defdescription{%s}" % ordoescape(commands["Description"]))
         if commands.get("Usage"):
             out.append(r"\defusage{%s}" % codeescape(commands["Usage"]))
         if commands.get("Time"):
@@ -172,7 +172,7 @@ def processwithcomments(caption, instream, outstream, listingslang):
         if includelist:
             out.append(r"\leftcaption{%s}" % pathescape(", ".join(includelist)))
         if nsource:
-            out.append(r"\rightcaption{%s%d lines}" % (hsh, len(nsource.split("\n"))))
+            out.append(r"\rightcaption{%s%d строк}" % (hsh, len(nsource.split("\n"))))
         langstr = ", language="+listingslang
         out.append(r"\begin{lstlisting}[caption={%s}%s]" % (pathescape(caption), langstr))
         out.append(nsource)
@@ -185,7 +185,7 @@ def processraw(caption, instream, outstream, listingslang = 'raw'):
     try:
         source = instream.read().strip()
         addref(caption, outstream)
-        print(r"\rightcaption{%d lines}" % len(source.split("\n")), file=outstream)
+        print(r"\rightcaption{%d строк}" % len(source.split("\n")), file=outstream)
         print(r"\begin{lstlisting}[language=%s,caption={%s}]" % (listingslang, pathescape(caption)), file=outstream)
         print(source, file=outstream)
         print(r"\end{lstlisting}", file=outstream)

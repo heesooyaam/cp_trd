@@ -1,10 +1,8 @@
 /**
  * Author: Andrew-A-13, refactored for cp_trd
  * Source: Templates/Потоки/dinic
- * Description: Dinic with explicit reverse edges, ll capacities.
- *  Parallel edges and self loops are allowed. s must differ
- *  from t. max\_flow returns additional flow in the residual graph.
- *  Flow on original edge id is \texttt{edges[id \^{} 1].cap}.
+ * Description: Диниц с явными обратными рёбрами, ёмкости ll. Допустимы петли и кратные рёбра; s!=t. max\_flow возвращает дополнительный поток в остаточной сети. Поток исходного ребра id равен \texttt{edges[id \^{} 1].cap}. После завершения level[v]!=-1 отмечает сторону истока минимального разреза.
+
  * Time: O(V^2 E)
  * Status: Stress-tested against exhaustive min cuts.
  */
@@ -20,15 +18,15 @@ struct dinic {
     dinic(int n) : graph(n), level(n), ptr(n) {}
     void add_edge(int u, int v, ll cap) {
         assert(cap >= 0);
-        graph[u].push_back(int(edges.size()));
-        edges.push_back({v, cap});
-        graph[v].push_back(int(edges.size()));
-        edges.push_back({u, 0});
+        graph[u].eb(int(edges.size()));
+        edges.eb(v, cap);
+        graph[v].eb(int(edges.size()));
+        edges.eb(u, 0);
     }
     bool bfs(int s, int t) {
-        fill(level.begin(), level.end(), -1);
+        fill(all(level), -1);
         queue<int> q;
-        q.push(s);
+        q.emplace(s);
         level[s] = 0;
         while (!q.empty()) {
             int v = q.front();
@@ -36,18 +34,18 @@ struct dinic {
             for (int id : graph[v]) {
                 auto [u, cap] = edges[id];
                 if (cap && level[u] == -1)
-                    level[u] = level[v] + 1, q.push(u);
+                    level[u] = level[v] + 1, q.emplace(u);
             }
         }
         return level[t] != -1;
     }
     ll dfs(int v, int t, ll flow) {
-        if (v == t) return flow;
+        if (v == t)
+            return flow;
         for (int &i = ptr[v]; i < int(graph[v].size()); ++i) {
             int id = graph[v][i], u = edges[id].to;
             if (edges[id].cap && level[u] == level[v] + 1) {
-                ll pushed =
-                    dfs(u, t, min(flow, edges[id].cap));
+                ll pushed = dfs(u, t, min(flow, edges[id].cap));
                 if (pushed) {
                     edges[id].cap -= pushed;
                     edges[id ^ 1].cap += pushed;
@@ -61,8 +59,9 @@ struct dinic {
         assert(s != t);
         ll result = 0;
         while (bfs(s, t)) {
-            fill(ptr.begin(), ptr.end(), 0);
-            while (ll f = dfs(s, t, LLONG_MAX)) result += f;
+            fill(all(ptr), 0);
+            while (ll f = dfs(s, t, LLONG_MAX))
+                result += f;
         }
         return result;
     }

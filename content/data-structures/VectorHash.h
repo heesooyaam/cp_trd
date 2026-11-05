@@ -1,9 +1,8 @@
 /**
  * Author: Andrew-A-13 (idea), cp_trd
  * Source: Templates/std::hash
- * Description: Hash vector<int> for unordered containers.
- *  Pass as a hasher; do not specialize std::hash<vector<int>>.
- *  Equality still resolves collisions. Not cryptographic.
+ * Description: Хеш vector<int> для unordered-контейнеров. Передавать отдельным параметром; не специализировать std::hash<vector<int>>. Коллизии разрешаются сравнением ключей. Не криптографический.
+
  * Usage: unordered_map<vi, int, VectorHash> mp;
  * Time: O(N)
  * Status: Container lookup tests, including negative values.
@@ -17,12 +16,12 @@ struct vector_hash {
         return x ^ (x >> 31);
     }
     size_t operator()(const vi &a) const {
-        static const uint64_t seed =
-            chrono::steady_clock::now()
-                .time_since_epoch()
-                .count();
+        static const uint64_t seed = chrono::steady_clock::now()
+                                         .time_since_epoch()
+                                         .count();
         uint64_t h = mix(seed + a.size());
-        for (int x : a) h = mix(h ^ mix(uint64_t(x)));
+        for (int x : a)
+            h = mix(h ^ mix(uint64_t(x)));
         return size_t(h);
     }
 };

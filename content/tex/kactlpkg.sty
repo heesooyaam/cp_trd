@@ -2,9 +2,10 @@
 % License: CC0
 \ProvidesPackage{kactlpkg}
 
-\usepackage[T2A,T1]{fontenc}
-\usepackage[russian,english]{babel}
-\usepackage[utf8]{inputenc}             % Encoding UTF-8
+\usepackage[T1,T2A]{fontenc}
+\usepackage[english,russian]{babel}
+\usepackage[utf8]{inputenc}
+\DeclareUnicodeCharacter{2192}{\ensuremath{\to}}             % Encoding UTF-8
 \usepackage{listings}                   % Source code listings
 \usepackage{framed}                     % Source code listings
 \usepackage[a4paper,landscape,hmargin={0.5cm,0.5cm},vmargin={1.0cm,0.4cm}]{geometry}
@@ -14,7 +15,9 @@
 \usepackage{tocloft}                    % Custom Table of Contents
 \usepackage{titletoc}                   % Design control over Table of Contents
 \usepackage{ifthen}                     % To enable some conditional programming in LaTeX
-\usepackage{courier}                    % To get bold typewriter typeface
+\usepackage{type1ec}
+\renewcommand{\ttdefault}{cmtt}
+% \usepackage{courier}                    % To get bold typewriter typeface
 \usepackage{graphicx}                   % To rotate page numbers
 \usepackage{fix-cm}                     % Large font sizes
 \usepackage{paralist}                   % For compact enumerations
@@ -134,17 +137,17 @@
 \renewcommand\section{\@startsection {section}{1}{\z@}%
                                    {-0.5ex \@plus -1ex \@minus -.2ex}%
                                    {.4ex}%
-                                   {\normalfont\normalsize\bfseries}}
+                                   {\normalfont\fontsize{8}{9}\selectfont\bfseries}}
 
 \renewcommand\subsection{\@startsection{subsection}{2}{\z@}
 	{1ex\@plus .2ex \@minus .2ex}
 	{.2ex}
-	{\normalfont\normalsize\bfseries}}
+	{\normalfont\fontsize{8}{9}\selectfont\bfseries}}
 
 \renewcommand\subsubsection{\@startsection{subsubsection}{3}{\z@}
 	{1ex\@plus .2ex \@minus .2ex}
 	{1ex \@plus .2ex}
-	{\normalfont\normalsize\bfseries}}
+	{\normalfont\fontsize{8}{9}\selectfont\bfseries}}
 
 % Styles for local toc
 \titlecontents{localsection}[1.5em]{\small}{}
@@ -198,12 +201,14 @@
 \lstset{morekeywords={alignas,alignof}}
 \lstset{deletedirectives={line}}
 \lstset{frame=t}
-\lstset{tabsize=2}
+\lstset{tabsize=4}
 \lstset{showstringspaces=false}
 \lstset{breaklines=true}
-\lstset{basicstyle=\fontencoding{T1}\fontsize{6.5}{7.2}\selectfont\ttfamily}
-\lstset{commentstyle=\normalfont\itshape}
+\lstset{columns=fullflexible,keepspaces=true}
+\lstset{basicstyle=\fontencoding{T2A}\fontfamily{cmtt}\fontsize{6.5}{7.2}\selectfont}
+\lstset{commentstyle=\fontencoding{T2A}\fontfamily{cmr}\fontsize{6.5}{7.2}\selectfont\itshape}
 \lstset{literate={^}{\caret}{1} {~}{\tilde}{1} {\{}{\nicelbrace}{1} {\}}{\nicerbrace}{1}}
+\lstset{literate={А}{{\char192}}1 {Б}{{\char193}}1 {В}{{\char194}}1 {Г}{{\char195}}1 {Д}{{\char196}}1 {Е}{{\char197}}1 {Ё}{{\char156}}1 {Ж}{{\char198}}1 {З}{{\char199}}1 {И}{{\char200}}1 {Й}{{\char201}}1 {К}{{\char202}}1 {Л}{{\char203}}1 {М}{{\char204}}1 {Н}{{\char205}}1 {О}{{\char206}}1 {П}{{\char207}}1 {Р}{{\char208}}1 {С}{{\char209}}1 {Т}{{\char210}}1 {У}{{\char211}}1 {Ф}{{\char212}}1 {Х}{{\char213}}1 {Ц}{{\char214}}1 {Ч}{{\char215}}1 {Ш}{{\char216}}1 {Щ}{{\char217}}1 {Ъ}{{\char218}}1 {Ы}{{\char219}}1 {Ь}{{\char220}}1 {Э}{{\char221}}1 {Ю}{{\char222}}1 {Я}{{\char223}}1 {а}{{\char224}}1 {б}{{\char225}}1 {в}{{\char226}}1 {г}{{\char227}}1 {д}{{\char228}}1 {е}{{\char229}}1 {ё}{{\char188}}1 {ж}{{\char230}}1 {з}{{\char231}}1 {и}{{\char232}}1 {й}{{\char233}}1 {к}{{\char234}}1 {л}{{\char235}}1 {м}{{\char236}}1 {н}{{\char237}}1 {о}{{\char238}}1 {п}{{\char239}}1 {р}{{\char240}}1 {с}{{\char241}}1 {т}{{\char242}}1 {у}{{\char243}}1 {ф}{{\char244}}1 {х}{{\char245}}1 {ц}{{\char246}}1 {ч}{{\char247}}1 {ш}{{\char248}}1 {щ}{{\char249}}1 {ъ}{{\char250}}1 {ы}{{\char251}}1 {ь}{{\char252}}1 {э}{{\char253}}1 {ю}{{\char254}}1 {я}{{\char255}}1 {—}{{---}}1 {–}{{--}}1 {→}{{$\to$}}1 {^}{\caret}{1} {~}{\tilde}{1} {\{}{\nicelbrace}{1} {\}}{\nicerbrace}{1}}
 \lstset{emptylines=*1}
 \lstset{inputencoding=utf8}
 \lstset{aboveskip=2pt}
@@ -226,7 +231,7 @@
 		\vspace{3cm}\\
 		{\fontsize{28}{32}\selectfont\texttt{C++20}}\\
 		{\fontsize{25}{30}\selectfont \@unilong\\}
-		{\fontsize{60}{60}\selectfont \@teamname\\}
+		{\fontencoding{T1}\fontsize{60}{60}\selectfont \@teamname\\}
 		\vspace{0.5cm}
 		{\huge \@teammembers\\}
 		\vfill
@@ -268,12 +273,12 @@
 	\setboolean{hastime}{false}
 	\setboolean{hasmemory}{false}
 	\setboolean{hasleftcaption}{false}
-	\myneedspace{3\baselineskip}
+	\myneedspace{7\baselineskip}
 	\penalty-100
-	{\large #2}
+	\label{code-start:#2}{\fontsize{8}{9}\selectfont\bfseries #2}\par\nopagebreak
 	\immediate\write18{rm -f \@builddir/kactl.tmp} % Don't include old kactl.tmp on failure.
 	\immediate\write18{python3 content/tex/preprocessor.py -i "\@kactldir/#2" -o \@builddir/kactl.tmp #1}
-	\immediate\input{\@builddir/kactl.tmp}
+	\immediate\input{\@builddir/kactl.tmp}\label{code-end:#2}
 }
 
 \newcommand{\import}[1]{
@@ -351,12 +356,12 @@
 }
 
 \long\def\@makecaption#1#2{
-	\vspace{-3pt}
-	\ifthenelse{\boolean{hasdescription}}{\codeheader{Description}{\@defdescription}}{}
-	\ifthenelse{\boolean{hasusage}}{\codeheader{Usage}{\@defusage}}{}
-	\ifthenelse{\boolean{hasmemory}}{\codeheader{Memory}{\@defmemory}}{}
-	\ifthenelse{\boolean{hastime}}{\codeheader{Time}{\@deftime}}{}
-	\ifthenelse{\boolean{hasleftcaption}}{\vspace{0pt}}{\vspace{-5pt}}
+	\vspace{0pt}
+	\ifthenelse{\boolean{hasdescription}}{\codeheader{Описание}{\@defdescription}}{}
+	\ifthenelse{\boolean{hasusage}}{\codeheader{Пример}{\@defusage}}{}
+	\ifthenelse{\boolean{hasmemory}}{\codeheader{Память}{\@defmemory}}{}
+	\ifthenelse{\boolean{hastime}}{\codeheader{Время}{\@deftime}}{}
+	\ifthenelse{\boolean{hasleftcaption}}{\vspace{0pt}}{\vspace{0pt}}
 	\tiny
 	\texttt{\@leftcaption} \hfill \@rightcaption
 }

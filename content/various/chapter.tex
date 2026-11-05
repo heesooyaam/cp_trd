@@ -1,38 +1,53 @@
-\chapter{Various}
+\chapter{Разное}
 
-\section{Intervals}
+\section{Интервалы}
 	\kactlimport{IntervalContainer.h}
 	\kactlimport{IntervalCover.h}
 	\kactlimport{ConstantIntervals.h}
 
-\section{Ternary search / golden section}
+\section{Тернарный поиск / золотое сечение}
 	\kactlimport{GoldenSectionSearch.h}
 
-\section{Misc. algorithms}
+\section{Другие алгоритмы}
 	\kactlimport{FastKnapsack.h}
 	\kactlimport{SimulatedAnnealing.h}
 
-\section{Dynamic programming}
+\section{Оптимизации ДП}
 	\kactlimport{KnuthDP.h}
 	\kactlimport{DivideAndConquerDP.h}
 
-\section{Debugging tricks}
-	\begin{itemize}
-		\item \verb@signal(SIGSEGV, [](int) { _Exit(0); });@ converts segfaults into Wrong Answers.
-			Similarly one can catch SIGABRT (assertion failures) and SIGFPE (zero divisions).
-			\verb@_GLIBCXX_DEBUG@ failures generate SIGABRT (or SIGSEGV on gcc 5.4.0 apparently).
-		\item \verb@feenableexcept(29);@ kills the program on NaNs (\texttt 1), 0-divs (\texttt 4), infinities (\texttt 8) and denormals (\texttt{16}).
-	\end{itemize}
-
-\section{Optimization tricks}
-	\verb@__builtin_ia32_ldmxcsr(40896);@ disables denormals (which make floats 20x slower near their minimum value).
-	\subsection{Bit hacks}
-		\begin{itemize}
-			\item \verb@x & -x@ is the least bit in \texttt{x}.
-			\item \verb@for (int x = m; x; ) { --x &= m; ... }@ loops over all subset masks of \texttt{m} (except \texttt{m} itself).
-			\item \verb@c = x&-x, r = x+c; (((r^x) >> 2)/c) | r@ is the next number after \texttt{x} with the same number of bits set.
-			\item \verb@rep(b,0,K) rep(i,0,(1 << K))@ \\ \verb@  if (i & 1 << b) D[i] += D[i^(1 << b)];@ computes all sums of subsets.
-		\end{itemize}
+\section{Отладка}
+\begin{itemize}[nosep,leftmargin=*]
+\item \texttt{-D\_GLIBCXX\_DEBUG}: проверки итераторов и границ STL.
+\item \texttt{-fsanitize=address,undefined -g}: выходы за границы,
+ошибки памяти и неопределённое поведение. Использовать локально.
+\item \texttt{feenableexcept(29)}: остановка на недопустимых
+вещественных операциях, делении на ноль, переполнении и потере точности
+при слишком малом результате (GNU/Linux).
+\end{itemize}
+\section{Ускорение}
+\subsection{Битовые приёмы}
+\begin{itemize}[nosep,leftmargin=*]
+\item \texttt{x \& -x} — младший установленный бит.
+\item Все подмаски m, включая нулевую:
+\begin{lstlisting}
+for (int s = m;; s = (s - 1) & m) {
+    // обработать s
+    if (s == 0)
+        break;
+}
+\end{lstlisting}
+\item Следующее число с тем же числом единиц:
+\texttt{c=x\&-x; r=x+c; x=(((r\^{}x)>>2)/c)|r;}
+Требуются x>0 и отсутствие переполнения r.
+\item Суммы по подмаскам:
+\begin{lstlisting}
+for (int b = 0; b < k; ++b)
+    for (int s = 0; s < (1 << k); ++s)
+        if (s & (1 << b))
+            d[s] += d[s ^ (1 << b)];
+\end{lstlisting}
+\end{itemize}
 	\import{pragmas.tex}
 	\kactlimport{FastMod.h}
 	\kactlimport{FastInput.h}

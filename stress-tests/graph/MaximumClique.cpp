@@ -18,12 +18,12 @@ struct timeit {
 
 
 int main() {
-	rep(it, 0, 100000) {
+	for (int it = 0; it < (100000); ++it) {
 		int n =(rand()%32)+1;
 		vb ed(n);
 		vector<maximal::B> ed2(n);
 		int p =rand()%100;
-		rep(i, 0, n) rep(j, 0, i) {
+		for (int i = 0; i < (n); ++i) for (int j = 0; j < (i); ++j) {
 			ed[i][j] = (rand() % 100) < p;
 			ed[j][i] = ed[i][j];
 			ed2[i][j] = ed[i][j];

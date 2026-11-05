@@ -4,12 +4,12 @@
 
 int main() {
 	srand(2);
-	rep(it,0,1000000) {
+	for (int it = 0; it < (1000000); ++it) {
 		int N = rand() % 20 + 1;
 		// int N = 4;
 		vector<P> ps;
-		rep(i,0,N) {
-			ps.emplace_back(rand() % 21 - 10, rand() % 21 - 10);
+		for (int i = 0; i < (N); ++i) {
+			ps.eb(rand() % 21 - 10, rand() % 21 - 10);
 		}
 
 		pair<P, double> pa = mec(ps);
@@ -22,7 +22,7 @@ int main() {
 
 		assert(abs(maxDist - rad) < 1e-6);
 
-		rep(it2,0,50) {
+		for (int it2 = 0; it2 < (50); ++it2) {
 			P q2 = mid - P(0, 1e-6).rotate(it2);
 			for(auto &p: ps) {
 				if((p - q2).dist() > rad - 1e-7) goto fail;

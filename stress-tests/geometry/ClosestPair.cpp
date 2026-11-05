@@ -28,17 +28,17 @@ double cp_sub(IIt ya, IIt yaend, IIt xa, It &i1, It &i2) {
 	for(IIt i = ya; i != yaend; ++i) { // Divide
 		if(*i != xa[split] && (double)(**i-splitp).dist2() < 1e-12)
 			return i1 = *i, i2 = xa[split], 0;// nasty special case!
-		if (**i < splitp) ly.push_back(*i);
-		else ry.push_back(*i);
+		if (**i < splitp) ly.eb(*i);
+		else ry.eb(*i);
 	} // assert((signed)lefty.size() == split)
 	It j1, j2; // Conquer
-	double a = cp_sub(ly.begin(), ly.end(), xa, i1, i2);
-	double b = cp_sub(ry.begin(), ry.end(), xa+split, j1, j2);
+	double a = cp_sub(all(ly), xa, i1, i2);
+	double b = cp_sub(all(ry), xa+split, j1, j2);
 	if(b < a) a = b, i1 = j1, i2 = j2;
 	double a2 = a*a;
 	for(IIt i = ya; i != yaend; ++i) { // Create strip (y-sorted)
 		double x = (double)(*i)->x;
-		if(x >= splitx-a && x <= splitx+a) stripy.push_back(*i);
+		if(x >= splitx-a && x <= splitx+a) stripy.eb(*i);
 	}
 	for(IIt i = stripy.begin(); i != stripy.end(); ++i) {
 		const P &p1 = **i;
@@ -56,10 +56,10 @@ double closestpair(It begin, It end, It &i1, It &i2 ) {
 	vector<It> xa, ya;
 	assert(end-begin >= 2);
 	for (It i = begin; i != end; ++i)
-		xa.push_back(i), ya.push_back(i);
-	sort(xa.begin(), xa.end(), it_less<It>);
-	sort(ya.begin(), ya.end(), y_it_less<It>);
-	return cp_sub(ya.begin(), ya.end(), xa.begin(), i1, i2);
+		xa.eb(i), ya.eb(i);
+	sort(all(xa), it_less<It>);
+	sort(all(ya), y_it_less<It>);
+	return cp_sub(all(ya), xa.begin(), i1, i2);
 }
 }
 
@@ -67,7 +67,7 @@ int main() {
 	// Compare against the old code
 	ll sum = 0;
 	int mode = 1;
-	if (mode != 0) rep(it,0,100) {
+	if (mode != 0) for (int it = 0; it < (100); ++it) {
 		// clog << it << ' ';
 		int n = 100000;
 		int maxx = rand() % 1000000 + 1;
@@ -75,10 +75,10 @@ int main() {
 		int biasx = -100;
 		int biasy = -100;
 		vector<P> ps;
-		rep(i,0,n) {
+		for (int i = 0; i < (n); ++i) {
 			int x = rand() % maxx + biasx;
 			int y = rand() % maxy + biasy;
-			ps.emplace_back(x, y);
+			ps.eb(x, y);
 		}
 		ll foundDist = -1, oldDist = -1, theDist = -1;
 		if (mode == 1 || mode == 3) {
@@ -100,20 +100,20 @@ int main() {
 	// cout << sum << endl;
 
 	// Compare against bruteforce
-	rep(it,0,1'000'000) {
+	for (int it = 0; it < (1'000'000); ++it) {
 		int n = rand() % 15 + 2;
 		int maxx = rand() % 20 + 1;
 		int maxy = rand() % 20 + 1;
 		int biasx = rand() % 20 - 10;
 		int biasy = rand() % 20 - 10;
 		vector<P> ps;
-		rep(i,0,n) {
+		for (int i = 0; i < (n); ++i) {
 			int x = rand() % maxx + biasx;
 			int y = rand() % maxy + biasy;
-			ps.emplace_back(x, y);
+			ps.eb(x, y);
 		}
 		ll minDist = LLONG_MAX;
-		rep(i,0,n) rep(j,i+1,n) {
+		for (int i = 0; i < (n); ++i) for (int j = i+1; j < (n); ++j) {
 			minDist = min(minDist, (ps[i] - ps[j]).dist2());
 		}
 		auto pa = closest(ps);

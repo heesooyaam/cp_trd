@@ -1,10 +1,9 @@
 /**
  * Author: Andrew-A-13, adapted to heesooyaam's style
  * Source: Templates/Строковые алгоритмы/Суффиксный массив
- * Description: Suffix array by cyclic shifts + counting sort.
- *  Supports all byte values, including zero; input is unchanged.
- *  lcp[i] = LCP(sa[i],sa[i+1]); empty input gives empty arrays.
- * Time: Build O(n \log n), LCP O(n), memory O(n).
+ * Description: Суффиксный массив удвоениями и сортировкой подсчётом. Допустимы все байты, включая нулевой; вход не меняется. lcp[i]=LCP(sa[i],sa[i+1]). Пустая строка даёт пустые массивы.
+
+ * Time: Построение O(n \log n), LCP O(n), память O(n).
  * Status: Stress-tested against sorted suffixes and naive LCP.
  */
 #pragma once
@@ -15,9 +14,11 @@ vector<int> suffix_array(string_view s) {
     for (int i = 0; i < n - 1; ++i) {
         a[i] = (unsigned char)s[i] + 1;
     }
-    for (int x : a) ++cnt[x];
-    partial_sum(cnt.begin(), cnt.end(), cnt.begin());
-    for (int i = n - 1; i >= 0; --i) p[--cnt[a[i]]] = i;
+    for (int x : a)
+        ++cnt[x];
+    partial_sum(all(cnt), cnt.begin());
+    for (int i = n - 1; i >= 0; --i)
+        p[--cnt[a[i]]] = i;
     for (int i = 1; i < n; ++i) {
         c[p[i]] = c[p[i - 1]] + (a[p[i]] != a[p[i - 1]]);
     }
@@ -26,8 +27,9 @@ vector<int> suffix_array(string_view s) {
             pn[i] = (p[i] - len + n) % n;
         }
         cnt.assign(n, 0);
-        for (int x : c) ++cnt[x];
-        partial_sum(cnt.begin(), cnt.end(), cnt.begin());
+        for (int x : c)
+            ++cnt[x];
+        partial_sum(all(cnt), cnt.begin());
         for (int i = n - 1; i >= 0; --i) {
             p[--cnt[c[pn[i]]]] = pn[i];
         }
@@ -46,7 +48,8 @@ vector<int> suffix_array(string_view s) {
 vector<int> suffix_lcp(string_view s, const vector<int> &sa) {
     int n = int(s.size()), k = 0;
     vector<int> pos(n), lcp(max(0, n - 1));
-    for (int i = 0; i < n; ++i) pos[sa[i]] = i;
+    for (int i = 0; i < n; ++i)
+        pos[sa[i]] = i;
     for (int i = 0; i < n; ++i) {
         if (pos[i] == n - 1) {
             k = 0;
@@ -56,7 +59,8 @@ vector<int> suffix_lcp(string_view s, const vector<int> &sa) {
         while (i + k < n && j + k < n && s[i + k] == s[j + k])
             ++k;
         lcp[pos[i]] = k;
-        if (k) --k;
+        if (k)
+            --k;
     }
     return lcp;
 }

@@ -1,11 +1,9 @@
 /**
  * Author: heesooyaam, adapted for cp_trd
  * Source: AlgoTemplates/Strings/suffix_structures/suffix_automaton.cpp
- * Description: SAM over a..z. State 0 is missing, root is 1.
- *  add appends to the same string. After adding, call
- *  count\_occurrences before reading occ (safe to repeat).
- *  get\_state\_size(v) gives the inclusive length interval.
- * Time: Build O(n), count\_occurrences O(n \log n).
+ * Description: Суффиксный автомат для a..z. Корень 1, отсутствующее состояние 0. add дописывает строку. Перед чтением occ вызвать count\_occurrences; повторный вызов допустим. get\_state\_size(v) возвращает включительный диапазон длин состояния.
+
+ * Time: Построение O(n), count\_occurrences O(n \log n).
  * Memory: O(26n)
  * Status: Exhaustive small strings, occurrences and traverser tests.
  */
@@ -34,7 +32,7 @@ struct suffix_automaton {
     void push_back(char ch) {
         assert('a' <= ch && ch <= 'z');
         int c = ch - 'a', v = last, cur = int(st.size());
-        st.emplace_back();
+        st.eb();
         st[cur].len = st[last].len + 1;
         st[cur].seed = 1;
         while (v && !st[v].go[c]) {
@@ -49,7 +47,7 @@ struct suffix_automaton {
                 st[cur].sufflink = q;
             } else {
                 int clone = int(st.size());
-                st.push_back(st[q]);
+                st.eb(st[q]);
                 st[clone].len = st[v].len + 1;
                 st[clone].seed = st[clone].occ = 0;
                 st[q].sufflink = st[cur].sufflink = clone;
@@ -62,16 +60,19 @@ struct suffix_automaton {
         last = cur;
     }
     void add(string_view s) {
-        for (char c : s) push_back(c);
+        for (char c : s)
+            push_back(c);
     }
     void count_occurrences() {
         vector<int> order(st.size() - 2);
-        iota(order.begin(), order.end(), 2);
-        sort(order.begin(), order.end(), [&](int a, int b) {
+        iota(all(order), 2);
+        sort(all(order), [&](int a, int b) {
             return st[a].len > st[b].len;
         });
-        for (auto &v : st) v.occ = v.seed;
-        for (int v : order) sufflink(v).occ += st[v].occ;
+        for (auto &v : st)
+            v.occ = v.seed;
+        for (int v : order)
+            sufflink(v).occ += st[v].occ;
         st[root].occ = 0;
     }
 };
@@ -120,7 +121,8 @@ int longest_common_substring(suffix_automaton &sa,
                tr.can_move_by_sufflink()) {
             tr.move_by_sufflink();
         }
-        if (tr.can_move_by_char(c)) tr.move_by_char(c);
+        if (tr.can_move_by_char(c))
+            tr.move_by_char(c);
         ans = max(ans, tr.len);
     }
     return ans;

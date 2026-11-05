@@ -42,7 +42,7 @@ void dela(A& v, F f) {
 	auto ret = triangulate(v);
 	assert(sz(ret) % 3 == 0);
 	map<P, int> lut;
-	rep(i,0,sz(v)) lut[v[i]] = i;
+	for (int i = 0; i < (sz(v)); ++i) lut[v[i]] = i;
 	for (int a = 0; a < sz(ret); a += 3) {
 		f(lut[ret[a]], lut[ret[a+1]], lut[ret[a+2]]);
 	}
@@ -51,15 +51,15 @@ void dela(A& v, F f) {
 int main1() {
 	srand(2);
 	feenableexcept(29);
-	rep(it,0,3000000) {{
+	for (int it = 0; it < (3000000); ++it) {{
 		bumpalloc.reset();
 		// if (it % 200 == 0) cerr << endl;
 		vector<P> ps;
 		int N = rand() % 20 + 1;
 		int xrange = rand() % 50 + 1;
 		int yrange = rand() % 50 + 1;
-		rep(i,0,N) {
-			ps.emplace_back(rand() % (2*xrange) - xrange, rand() % (2*yrange) - yrange);
+		for (int i = 0; i < (N); ++i) {
+			ps.eb(rand() % (2*xrange) - xrange, rand() % (2*yrange) - yrange);
 		}
 
 		auto coc = [&](int i, int j, int k, int l) {
@@ -73,22 +73,22 @@ int main1() {
 			return abs(q) < 1e-4;
 		};
 
-		rep(i,0,N) rep(j,0,i) {
+		for (int i = 0; i < (N); ++i) for (int j = 0; j < (i); ++j) {
 			// identical
 			if (ps[i] == ps[j]) {  goto fail; }
 		}
-		if (false) rep(i,0,N) rep(j,0,i) rep(k,0,j) {
+		if (false) for (int i = 0; i < (N); ++i) for (int j = 0; j < (i); ++j) for (int k = 0; k < (j); ++k) {
 			// colinear
 			if (ps[i].cross(ps[j], ps[k]) == 0) {  goto fail; }
 		}
-		if (false) rep(i,0,N) rep(j,0,i) rep(k,0,j) rep(l,0,k) {
+		if (false) for (int i = 0; i < (N); ++i) for (int j = 0; j < (i); ++j) for (int k = 0; k < (j); ++k) for (int l = 0; l < (k); ++l) {
 			// concyclic
 			if (coc(i,j,k,l) || coc(i,j,l,k) || coc(i,l,j,k) || coc(i,l,k,j)) {  goto fail; }
 		}
 
 		bool allColinear = true;
 		if (N >= 3) {
-			rep(i,2,N) if ((ps[i] - ps[0]).cross(ps[1] - ps[0])) allColinear = false;
+			for (int i = 2; i < (N); ++i) if ((ps[i] - ps[0]).cross(ps[1] - ps[0])) allColinear = false;
 		}
 
 		auto fail = [&]() {
@@ -116,12 +116,12 @@ int main1() {
 			sumar += ar;
 			P2 c = ccCenter(top(ps[i]), top(ps[j]), top(ps[k]));
 			double ra = ccRadius(top(ps[i]), top(ps[j]), top(ps[k]));
-			rep(l,0,N) {
+			for (int l = 0; l < (N); ++l) {
 				if ((top(ps[l]) - c).dist() < ra - 1e-5) fail();
 			}
 		});
 		if (!allColinear) {
-			rep(i,0,N) if (!used[i]) fail();
+			for (int i = 0; i < (N); ++i) if (!used[i]) fail();
 		} else {
 			assert(!any);
 		}
@@ -143,8 +143,8 @@ int main2() {
 	int N = 100000;
 	int xrange = 20000;
 	int yrange = 20000;
-	rep(i,0,N) {
-		ps.emplace_back(rand() % (2*xrange) - xrange, rand() % (2*yrange) - yrange);
+	for (int i = 0; i < (N); ++i) {
+		ps.eb(rand() % (2*xrange) - xrange, rand() % (2*yrange) - yrange);
 	}
 	sort(all(ps));
 	ps.erase(unique(all(ps)), ps.end());

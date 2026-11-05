@@ -86,11 +86,11 @@ struct HLD {
 		}
 		tie(sz, nod, ch) = mx;
 		if (2*sz < sum) return pii(sum, -1);
-		if (ch == -1) { ch = sz(C); C.emplace_back(); }
+		if (ch == -1) { ch = sz(C); C.eb(); }
 		V[nod].pos = sz(C[ch].nodes);
 		V[nod].chain = ch;
 		C[ch].par = at;
-		C[ch].nodes.push_back(nod);
+		C[ch].nodes.eb(nod);
 		return pii(sum, ch);
 	}
 };

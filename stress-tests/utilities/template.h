@@ -1,9 +1,8 @@
 #include <bits/stdc++.h>
 #include <cassert>
 using namespace std;
-
-#define rep(i, from, to) for (int i = from; i < (to); ++i)
-#define all(x) x.begin(), x.end()
+#define all(x) begin(x), end(x)
+#define eb(...) emplace_back(__VA_ARGS__)
 #define sz(x) (int)(x).size()
 typedef long long ll;
 typedef pair<int, int> pii;
