@@ -79,3 +79,19 @@
 - [Andrew-A-13/Templates: Строковые алгоритмы/Суффиксный массив](https://github.com/Andrew-A-13/Templates/blob/ced8a147a0007d985ef80748e46e939a51ce64b6/%D0%A1%D1%82%D1%80%D0%BE%D0%BA%D0%BE%D0%B2%D1%8B%D0%B5%20%D0%B0%D0%BB%D0%B3%D0%BE%D1%80%D0%B8%D1%82%D0%BC%D1%8B/%D0%A1%D1%83%D1%84%D1%84%D0%B8%D0%BA%D1%81%D0%BD%D1%8B%D0%B9%20%D0%BC%D0%B0%D1%81%D1%81%D0%B8%D0%B2)
 - [Andrew-A-13/Templates: Теория чисел/бинарное возведение в степень](https://github.com/Andrew-A-13/Templates/blob/ced8a147a0007d985ef80748e46e939a51ce64b6/%D0%A2%D0%B5%D0%BE%D1%80%D0%B8%D1%8F%20%D1%87%D0%B8%D1%81%D0%B5%D0%BB/%D0%B1%D0%B8%D0%BD%D0%B0%D1%80%D0%BD%D0%BE%D0%B5%20%D0%B2%D0%BE%D0%B7%D0%B2%D0%B5%D0%B4%D0%B5%D0%BD%D0%B8%D0%B5%20%D0%B2%20%D1%81%D1%82%D0%B5%D0%BF%D0%B5%D0%BD%D1%8C)
 
+
+## Второй пересмотр состава
+
+Из печати исключены Simplex, SimulatedAnnealing, FastInput, 3dHull, Point3D,
+PolyhedronVolume и обычный SegmentTree. Исходники оставлены для upstream-тестов.
+LazySegmentTree заменён GenericSegmentTree из пользовательского AlgoTemplates:
+исправлен пересчёт предков при точечном обновлении, добавлены пустые интервалы
+и пример суммы; HLD использует новый универсальный шаблон.
+Персистентное ДО заменено на пользовательский SumTree с присваиванием и примером
+версий для ограниченных частот; сумма возвращает T, дублирующее обновление убрано.
+Добавлены мосты/точки сочленения, Дилуорс/Мирский, пояснения ориентированного
+остова и настройки отладки через макросы. Сокращения vi/pii и контейнерные
+алиасы vd/vl/vpi/vb/vv развёрнуты в полные типы в content.
+
+Документация отладки: https://gcc.gnu.org/onlinedocs/libstdc++/manual/using_macros.html
+и https://gcc.gnu.org/onlinedocs/libstdc++/manual/debug_mode_using.html.

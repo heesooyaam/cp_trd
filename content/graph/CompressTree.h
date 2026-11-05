@@ -11,11 +11,11 @@
 
 #include "LCA.h"
 
-typedef vector<pair<int, int>> vpi;
-vpi compressTree(LCA &lca, const vi &subset) {
-    static vi rev;
+vector<pair<int, int>> compressTree(LCA &lca,
+                                    const vector<int> &subset) {
+    static vector<int> rev;
     rev.resize(sz(lca.time));
-    vi li = subset, &T = lca.time;
+    vector<int> li = subset, &T = lca.time;
     auto cmp = [&](int a, int b) { return T[a] < T[b]; };
     sort(all(li), cmp);
     int m = sz(li) - 1;
@@ -27,7 +27,7 @@ vpi compressTree(LCA &lca, const vi &subset) {
     li.erase(unique(all(li)), li.end());
     for (int i = 0; i < (sz(li)); ++i)
         rev[li[i]] = i;
-    vpi ret = {pii(0, li[0])};
+    vector<pair<int, int>> ret = {pair<int, int>(0, li[0])};
     for (int i = 0; i < (sz(li) - 1); ++i) {
         int a = li[i], b = li[i + 1];
         ret.eb(rev[lca.lca(a, b)], b);

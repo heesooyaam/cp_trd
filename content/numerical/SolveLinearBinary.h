@@ -12,10 +12,10 @@
 
 typedef bitset<1000> bs;
 
-int solveLinear(vector<bs> &A, vi &b, bs &x, int m) {
+int solveLinear(vector<bs> &A, vector<int> &b, bs &x, int m) {
     int n = sz(A), rank = 0, br;
     assert(m <= sz(x));
-    vi col(m);
+    vector<int> col(m);
     iota(all(col), 0);
     for (int i = 0; i < (n); ++i) {
         for (br = i; br < n; ++br)

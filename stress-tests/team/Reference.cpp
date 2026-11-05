@@ -195,18 +195,18 @@ void string_tests() {
 void structure_tests() {
     for(int it=0;it<50;++it) {
         int n=1+rnd(50);
-        persistent_segment_tree pst(n);
+        SumTree<ll> pst(n);
         vector<vector<ll>> data(1,vector<ll>(n));
         vi roots{0};
         for(int q=0;q<200;++q) {
             int version=rnd(int(roots.size())), pos=rnd(n), delta=rnd(100)-50;
-            auto next=data[version]; next[pos]+=delta;
-            int root=pst.add(roots[version],pos,delta);
+            auto next=data[version]; next[pos]=delta;
+            int root=pst.update(pos,delta,roots[version]);
             data.eb(next); roots.eb(root);
             for(int j=0;j<10;++j) {
                 int v=rnd(int(roots.size())),l=rnd(n+1),r=rnd(n+1);
                 if(l>r) swap(l,r);
-                assert(pst.query(roots[v],l,r)==accumulate(data[v].begin()+l,data[v].begin()+r,0LL));
+                assert(pst.get_sum(l,r,roots[v])==accumulate(data[v].begin()+l,data[v].begin()+r,0LL));
             }
         }
     }

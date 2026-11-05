@@ -15,7 +15,7 @@
 
 int matInv(vector<vector<ll>> &A) {
     int n = sz(A);
-    vi col(n);
+    vector<int> col(n);
     vector<vector<ll>> tmp(n, vector<ll>(n));
     for (int i = 0; i < (n); ++i)
         tmp[i][i] = 1, col[i] = i;

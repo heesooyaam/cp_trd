@@ -7,10 +7,10 @@
  */
 #pragma once
 
-template <class I> vi lis(const vector<I> &S) {
+template <class I> vector<int> lis(const vector<I> &S) {
     if (S.empty())
         return {};
-    vi prev(sz(S));
+    vector<int> prev(sz(S));
     typedef pair<I, int> p;
     vector<p> res;
     for (int i = 0; i < (sz(S)); ++i) {
@@ -22,7 +22,7 @@ template <class I> vi lis(const vector<I> &S) {
         prev[i] = it == res.begin() ? 0 : (it - 1)->second;
     }
     int L = sz(res), cur = res.back().second;
-    vi ans(L);
+    vector<int> ans(L);
     while (L--)
         ans[L] = cur, cur = prev[cur];
     return ans;

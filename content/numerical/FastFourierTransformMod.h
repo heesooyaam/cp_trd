@@ -15,11 +15,11 @@
 
 #include "FastFourierTransform.h"
 
-typedef vector<ll> vl;
-template <int M> vl convMod(const vl &a, const vl &b) {
+template <int M>
+vector<ll> convMod(const vector<ll> &a, const vector<ll> &b) {
     if (a.empty() || b.empty())
         return {};
-    vl res(sz(a) + sz(b) - 1);
+    vector<ll> res(sz(a) + sz(b) - 1);
     int B = 32 - __builtin_clz(sz(res)), n = 1 << B,
         cut = int(sqrt(M));
     vector<C> L(n), R(n), outs(n), outl(n);

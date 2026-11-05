@@ -10,22 +10,23 @@
  */
 #pragma once
 
-void FST(vi &a, bool inv) {
+void FST(vector<int> &a, bool inv) {
     for (int n = sz(a), step = 1; step < n; step *= 2) {
         for (int i = 0; i < n; i += 2 * step)
             for (int j = i; j < (i + step); ++j) {
                 int &u = a[j], &v = a[j + step];
                 tie(u, v) =
-                    inv ? pii(v - u, u) : pii(v, u + v); // AND
-                // inv ? pii(v, u - v) : pii(u + v, u); // OR /// include-line
-                // pii(u + v, u - v);                   // XOR /// include-line
+                    inv ? pair<int, int>(v - u, u)
+                        : pair<int, int>(v, u + v); // AND
+                // inv ? pair<int, int>(v, u - v) : pair<int, int>(u + v, u); // OR /// include-line
+                // pair<int, int>(u + v, u - v);                   // XOR /// include-line
             }
     }
     // if (inv) // только XOR /// include-line
     //     for (int &x : a) /// include-line
     //         x /= sz(a); /// include-line
 }
-vi conv(vi a, vi b) {
+vector<int> conv(vector<int> a, vector<int> b) {
     FST(a, 0);
     FST(b, 0);
     for (int i = 0; i < (sz(a)); ++i)

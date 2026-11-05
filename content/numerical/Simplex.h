@@ -5,8 +5,8 @@
  * Description: Максимизирует $c^Tx$ при $Ax\le b$, $x\ge0$. Возвращает -inf, если решений нет; inf, если максимум не ограничен; иначе оптимум. В x записывается решение (при неограниченности — допустимое). Численная устойчивость не гарантируется. Лучше выбирать переменные так, чтобы x=0 было допустимо.
 
  * Usage:
- * vvd A = {{1,-1}, {-1,1}, {-1,-2}};
- * vd b = {1,1,-4}, c = {-1,-1}, x;
+ * vector<vector<T>> A = {{1,-1}, {-1,1}, {-1,-2}};
+ * vector<T> b = {1,1,-4}, c = {-1,-1}, x;
  * T val = LPSolver(A, b, c).solve(x);
  * Time: O(NM) на поворот; в общем случае экспоненциальное число поворотов.
  * Status: seems to work?
@@ -14,8 +14,6 @@
 #pragma once
 
 typedef double T; // long double, Rational, double + mod<P>...
-typedef vector<T> vd;
-typedef vector<vd> vvd;
 
 const T eps = 1e-8, inf = 1 / .0;
 #define MP make_pair
@@ -25,12 +23,13 @@ const T eps = 1e-8, inf = 1 / .0;
 
 struct LPSolver {
     int m, n;
-    vi N, B;
-    vvd D;
+    vector<int> N, B;
+    vector<vector<T>> D;
 
-    LPSolver(const vvd &A, const vd &b, const vd &c)
+    LPSolver(const vector<vector<T>> &A, const vector<T> &b,
+             const vector<T> &c)
         : m(sz(b)), n(sz(c)), N(n + 1), B(m),
-          D(m + 2, vd(n + 2)) {
+          D(m + 2, vector<T>(n + 2)) {
         for (int i = 0; i < (m); ++i)
             for (int j = 0; j < (n); ++j)
                 D[i][j] = A[i][j];
@@ -90,7 +89,7 @@ struct LPSolver {
         }
     }
 
-    T solve(vd &x) {
+    T solve(vector<T> &x) {
         int r = 0;
         for (int i = 1; i < (m); ++i)
             if (D[i][n + 1] < D[r][n + 1])
@@ -108,7 +107,7 @@ struct LPSolver {
                 }
         }
         bool ok = simplex(1);
-        x = vd(n);
+        x = vector<T>(n);
         for (int i = 0; i < (m); ++i)
             if (B[i] < n)
                 x[B[i]] = D[i][n + 1];

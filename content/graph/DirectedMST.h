@@ -4,7 +4,7 @@
  * License: CC0
  * Source: https://github.com/spaghetti-source/algorithm/blob/master/graph/arborescence.cc
  * and https://github.com/bqi343/USACO/blob/42d177dfb9d6ce350389583cfa71484eb8ae614c/Implementations/content/graphs%20(12)/Advanced/DirectedMST.h for the reconstruction
- * Description: Минимальная исходящая арборесценция ориентированного графа с заданным корнем. При отсутствии возвращает -1.
+ * Description: Минимальное ориентированное остовное дерево от корня r (арборесценция). Выбирает n-1 ребро исходного графа: из r достижимы все вершины, в r не входит ни одного ребра, в остальные входит ровно одно. Циклов нет, путь от r до каждой вершины единственный. Минимизирует сумму весов. Просто DAG с достижимостью всех вершин может иметь лишние рёбра и несколько путей — это ещё не дерево. dmst(n,r,edges) возвращает (стоимость,родители); par[r]=-1. Если дерева нет, возвращает (-1,пустой вектор); при отрицательных весах отличать неудачу по пустому вектору.
 
  * Time: O(E \log V)
  * Status: Stress-tested, also tested on NWERC 2018 fastestspeedrun
@@ -48,13 +48,13 @@ void pop(Node *&a) {
     a = merge(a->l, a->r);
 }
 
-pair<ll, vi> dmst(int n, int r, vector<Edge> &g) {
+pair<ll, vector<int>> dmst(int n, int r, vector<Edge> &g) {
     RollbackUF uf(n);
     vector<Node *> heap(n);
     for (Edge e : g)
         heap[e.b] = merge(heap[e.b], new Node{e});
     ll res = 0;
-    vi seen(n, -1), path(n), par(n);
+    vector<int> seen(n, -1), path(n), par(n);
     seen[r] = r;
     vector<Edge> Q(n), in(n, {-1, -1}), comp;
     deque<tuple<int, int, vector<Edge>>> cycs;
@@ -81,7 +81,8 @@ pair<ll, vi> dmst(int n, int r, vector<Edge> &g) {
             in[uf.find(Q[i].b)] = Q[i];
     }
 
-    for (auto &[u, t, comp] : cycs) { // restore sol (необязательно)
+    for (auto &[u, t, comp] :
+         cycs) { // restore sol (необязательно)
         uf.rollback(t);
         Edge inEdge = in[u];
         for (auto &e : comp)

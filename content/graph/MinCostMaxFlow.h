@@ -21,7 +21,7 @@ struct MCMF {
     };
     int N;
     vector<vector<edge>> ed;
-    vi seen;
+    vector<int> seen;
     vector<ll> dist, pi;
     vector<edge *> par;
 

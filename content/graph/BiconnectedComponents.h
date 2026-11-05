@@ -10,14 +10,14 @@
  *  for (auto [a,b] : edges) {
  *    ed[a].eb(b, eid);
  *    ed[b].eb(a, eid++); }
- *  bicomps([\&](const vi\& edgelist) {...});
+ *  bicomps([\&](const vector<int>\& edgelist) {...});
  * Time: O(E + V)
  * Status: tested during MIPT ICPC Workshop 2017
  */
 #pragma once
 
-vi num, st;
-vector<vector<pii>> ed;
+vector<int> num, st;
+vector<vector<pair<int, int>>> ed;
 int Time;
 template <class F> int dfs(int at, int par, F &f) {
     int me = num[at] = ++Time, top = me;
@@ -33,11 +33,11 @@ template <class F> int dfs(int at, int par, F &f) {
                 top = min(top, up);
                 if (up == me) {
                     st.eb(e);
-                    f(vi(st.begin() + si, st.end()));
+                    f(vector<int>(st.begin() + si, st.end()));
                     st.resize(si);
                 } else if (up < me)
                     st.eb(e);
-                else { /* e is a bridge */
+                else { /* e — мост */
                 }
             }
         }

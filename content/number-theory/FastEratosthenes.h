@@ -20,11 +20,11 @@
 
 const int LIM = 1e6;
 bitset<LIM> isPrime;
-vi eratosthenes() {
+vector<int> eratosthenes() {
     const int S = (int)round(sqrt(LIM)), R = LIM / 2;
-    vi pr = {2}, sieve(S + 1);
+    vector<int> pr = {2}, sieve(S + 1);
     pr.reserve(int(LIM / log(LIM) * 1.1));
-    vector<pii> cp;
+    vector<pair<int, int>> cp;
     for (int i = 3; i <= S; i += 2)
         if (!sieve[i]) {
             cp.eb(i, i * i / 2);

@@ -8,9 +8,10 @@
  */
 #pragma once
 
-array<vi, 2> manacher(const string &s) {
+array<vector<int>, 2> manacher(const string &s) {
     int n = sz(s);
-    array<vi, 2> p = {vi(n + 1), vi(n)};
+    array<vector<int>, 2> p = {vector<int>(n + 1),
+                               vector<int>(n)};
     for (int z = 0; z < (2); ++z)
         for (int i = 0, l = 0, r = 0; i < n; i++) {
             int t = r - i + !z;

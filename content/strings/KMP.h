@@ -9,8 +9,8 @@
  */
 #pragma once
 
-vi pi(const string &s) {
-    vi p(sz(s));
+vector<int> pi(const string &s) {
+    vector<int> p(sz(s));
     for (int i = 1; i < (sz(s)); ++i) {
         int g = p[i - 1];
         while (g && s[i] != s[g])
@@ -20,8 +20,8 @@ vi pi(const string &s) {
     return p;
 }
 
-vi match(const string &s, const string &pat) {
-    vi p = pi(pat + '\0' + s), res;
+vector<int> match(const string &s, const string &pat) {
+    vector<int> p = pi(pat + '\0' + s), res;
     for (int i = sz(p) - sz(s); i < (sz(p)); ++i)
         if (p[i] == sz(pat))
             res.eb(i - 2 * sz(pat));

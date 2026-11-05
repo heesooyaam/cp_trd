@@ -10,9 +10,10 @@
  */
 #pragma once
 
-vi eulerWalk(vector<vector<pii>> &gr, int nedges, int src = 0) {
+vector<int> eulerWalk(vector<vector<pair<int, int>>> &gr,
+                      int nedges, int src = 0) {
     int n = sz(gr);
-    vi D(n), its(n), eu(nedges), ret, s = {src};
+    vector<int> D(n), its(n), eu(nedges), ret, s = {src};
     D[src]++; // разрешить также эйлеровы пути
     while (!s.empty()) {
         int x = s.back(), y, e, &it = its[x], end = sz(gr[x]);

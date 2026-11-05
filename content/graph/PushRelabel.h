@@ -18,8 +18,8 @@ struct PushRelabel {
     vector<vector<Edge>> g;
     vector<ll> ec;
     vector<Edge *> cur;
-    vector<vi> hs;
-    vi H;
+    vector<vector<int>> hs;
+    vector<int> H;
     PushRelabel(int n) : g(n), ec(n), cur(n), hs(2 * n), H(n) {}
 
     void addEdge(int s, int t, ll cap, ll rcap = 0) {
@@ -44,7 +44,7 @@ struct PushRelabel {
         int v = sz(g);
         H[s] = v;
         ec[t] = 1;
-        vi co(2 * v);
+        vector<int> co(2 * v);
         co[0] = v - 1;
         for (int i = 0; i < (v); ++i)
             cur[i] = g[i].data();

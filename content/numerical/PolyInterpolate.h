@@ -9,9 +9,9 @@
  */
 #pragma once
 
-typedef vector<double> vd;
-vd interpolate(vd x, vd y, int n) {
-    vd res(n), temp(n);
+vector<double> interpolate(vector<double> x, vector<double> y,
+                           int n) {
+    vector<double> res(n), temp(n);
     for (int k = 0; k < (n - 1); ++k)
         for (int i = k + 1; i < (n); ++i)
             y[i] = (y[i] - y[k]) / (x[i] - x[k]);

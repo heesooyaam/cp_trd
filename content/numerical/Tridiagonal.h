@@ -14,7 +14,7 @@ typedef double T;
 vector<T> tridiagonal(vector<T> diag, const vector<T> &super,
                       const vector<T> &sub, vector<T> b) {
     int n = sz(b);
-    vi tr(n);
+    vector<int> tr(n);
     for (int i = 0; i < (n - 1); ++i) {
         if (abs(diag[i]) <
             1e-9 * abs(super[i])) { // diag[i] == 0

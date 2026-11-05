@@ -5,8 +5,6 @@ using namespace std;
 #define eb(...) emplace_back(__VA_ARGS__)
 #define sz(x) (int)(x).size()
 typedef long long ll;
-typedef pair<int, int> pii;
-typedef vector<int> vi;
 
 int main() {
     cin.tie(0)->sync_with_stdio(0);

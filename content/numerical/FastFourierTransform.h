@@ -20,7 +20,7 @@
 #pragma once
 
 typedef complex<double> C;
-typedef vector<double> vd;
+
 void fft(vector<C> &a) {
     int n = sz(a), L = 31 - __builtin_clz(n);
     static vector<complex<long double>> R(2, 1);
@@ -32,7 +32,7 @@ void fft(vector<C> &a) {
         for (int i = k; i < (2 * k); ++i)
             rt[i] = R[i] = i & 1 ? R[i / 2] * x : R[i / 2];
     }
-    vi rev(n);
+    vector<int> rev(n);
     for (int i = 0; i < (n); ++i)
         rev[i] = (rev[i / 2] | (i & 1) << L) / 2;
     for (int i = 0; i < (n); ++i)
@@ -51,10 +51,11 @@ void fft(vector<C> &a) {
                 a[i + j] += z;
             }
 }
-vd conv(const vd &a, const vd &b) {
+vector<double> conv(const vector<double> &a,
+                    const vector<double> &b) {
     if (a.empty() || b.empty())
         return {};
-    vd res(sz(a) + sz(b) - 1);
+    vector<double> res(sz(a) + sz(b) - 1);
     int L = 32 - __builtin_clz(sz(res)), n = 1 << L;
     vector<C> in(n), out(n);
     copy(all(a), begin(in));

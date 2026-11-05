@@ -9,18 +9,18 @@
 
  * Status: stress-tested
  */
-typedef vector<bitset<200>> vb;
+
 struct Maxclique {
     double limit = 0.025, pk = 0;
     struct Vertex {
         int i, d = 0;
     };
-    typedef vector<Vertex> vv;
-    vb e;
-    vv V;
-    vector<vi> C;
-    vi qmax, q, S, old;
-    void init(vv &r) {
+
+    vector<bitset<200>> e;
+    vector<Vertex> V;
+    vector<vector<int>> C;
+    vector<int> qmax, q, S, old;
+    void init(vector<Vertex> &r) {
         for (auto &v : r)
             v.d = 0;
         for (auto &v : r)
@@ -31,14 +31,14 @@ struct Maxclique {
         for (int i = 0; i < (sz(r)); ++i)
             r[i].d = min(i, mxD) + 1;
     }
-    void expand(vv &R, int lev = 1) {
+    void expand(vector<Vertex> &R, int lev = 1) {
         S[lev] += S[lev - 1] - old[lev];
         old[lev] = S[lev - 1];
         while (sz(R)) {
             if (sz(q) + R.back().d <= sz(qmax))
                 return;
             q.eb(R.back().i);
-            vv T;
+            vector<Vertex> T;
             for (auto v : R)
                 if (e[R.back().i][v.i])
                     T.eb(v.i);
@@ -70,11 +70,11 @@ struct Maxclique {
             q.pop_back(), R.pop_back();
         }
     }
-    vi maxClique() {
+    vector<int> maxClique() {
         init(V), expand(V);
         return qmax;
     }
-    Maxclique(vb conn)
+    Maxclique(vector<bitset<200>> conn)
         : e(conn), C(sz(e) + 1), S(sz(C)), old(S) {
         for (int i = 0; i < (sz(e)); ++i)
             V.eb(i);

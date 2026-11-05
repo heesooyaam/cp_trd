@@ -9,14 +9,14 @@
  */
 #pragma once
 
-typedef vector<double> vd;
 const double eps = 1e-12;
 
-int solveLinear(vector<vd> &A, vd &b, vd &x) {
+int solveLinear(vector<vector<double>> &A, vector<double> &b,
+                vector<double> &x) {
     int n = sz(A), m = sz(x), rank = 0, br, bc;
     if (n)
         assert(sz(A[0]) == m);
-    vi col(m);
+    vector<int> col(m);
     iota(all(col), 0);
 
     for (int i = 0; i < (n); ++i) {

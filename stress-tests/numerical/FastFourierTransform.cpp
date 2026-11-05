@@ -18,10 +18,10 @@ int main() {
 		assert(norm(sum - a[k]) < 1e-6);
 	}
 
-	vd A(4), B(6);
+	vector<double> A(4), B(6);
 	for(auto &x: A) x = rand() / (RAND_MAX + 1.0) * 10 - 5;
 	for(auto &x: B) x = rand() / (RAND_MAX + 1.0) * 10 - 5;
-	vd C = conv(A, B);
+	vector<double> C = conv(A, B);
 	for (int i = 0; i < (sz(A) + sz(B) - 1); ++i) {
 		double sum = 0;
 		for (int j = 0; j < (sz(A)); ++j) if (i - j >= 0 && i - j < sz(B)) {

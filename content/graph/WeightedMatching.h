@@ -11,10 +11,10 @@
 #pragma once
 
 template <class T>
-pair<T, vi> weightedMatching(vector<vector<T>> &C) {
+pair<T, vector<int>> weightedMatching(vector<vector<T>> &C) {
     int i = sz(C), m = i ? sz(C[0]) : 0, c, s, r;
     vector<T> dist(m), pot(m);
-    vi match(i), rev(m, -1), cols(m), prev(m);
+    vector<int> match(i), rev(m, -1), cols(m), prev(m);
     T d = 0, nd, cost = 0;
     while (i--) {
         for (int c = 0; c < (m); ++c)

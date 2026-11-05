@@ -9,14 +9,14 @@
  */
 #pragma once
 
-pair<int, vi> globalMinCut(vector<vi> mat) {
-    pair<int, vi> best = {INT_MAX, {}};
+pair<int, vector<int>> globalMinCut(vector<vector<int>> mat) {
+    pair<int, vector<int>> best = {INT_MAX, {}};
     int n = sz(mat);
-    vector<vi> co(n);
+    vector<vector<int>> co(n);
     for (int i = 0; i < (n); ++i)
         co[i] = {i};
     for (int ph = 1; ph < (n); ++ph) {
-        vi w = mat[0];
+        vector<int> w = mat[0];
         size_t s = 0, t = 0;
         for (int it = 0; it < (n - ph);
              ++it) { // O(V^2) -> O(E log V) with prio. queue

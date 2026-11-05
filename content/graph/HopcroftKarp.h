@@ -9,9 +9,9 @@
  */
 #pragma once
 
-int hopcroftKarp(vector<vi> &g, vi &r) {
+int hopcroftKarp(vector<vector<int>> &g, vector<int> &r) {
     int n = sz(g), res = 0;
-    vi l(n, -1), q(n), d(n);
+    vector<int> l(n, -1), q(n), d(n);
     auto dfs = [&](auto f, int u) -> bool {
         int t = exchange(d[u], 0) + 1;
         for (int v : g[u])

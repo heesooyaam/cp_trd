@@ -5,7 +5,7 @@
  * Source: Czech graph algorithms book, by Demel. (Tarjan's algorithm)
  * Description: Компоненты сильной связности ориентированного графа: любые две вершины одной компоненты взаимно достижимы.
 
- * Usage: scc(graph, [\&](vi\& v) { ... }) обрабатывает все компоненты
+ * Usage: scc(graph, [\&](vector<int>\& v) { ... }) обрабатывает все компоненты
  * в обратном топологическом порядке. comp[i] — номер компоненты
  * вершины i; рёбра между компонентами направлены
  * к меньшим номерам. ncomps — число компонент.
@@ -14,7 +14,7 @@
  */
 #pragma once
 
-vi val, comp, z, cont;
+vector<int> val, comp, z, cont;
 int Time, ncomps;
 template <class G, class F> int dfs(int j, G &g, F &f) {
     int low = val[j] = ++Time, x;

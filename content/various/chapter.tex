@@ -10,21 +10,49 @@
 
 \section{Другие алгоритмы}
 	\kactlimport{FastKnapsack.h}
-	\kactlimport{SimulatedAnnealing.h}
 
 \section{Оптимизации ДП}
 	\kactlimport{KnuthDP.h}
 	\kactlimport{DivideAndConquerDP.h}
 
 \section{Отладка}
-\begin{itemize}[nosep,leftmargin=*]
-\item \texttt{-D\_GLIBCXX\_DEBUG}: проверки итераторов и границ STL.
-\item \texttt{-fsanitize=address,undefined -g}: выходы за границы,
-ошибки памяти и неопределённое поведение. Использовать локально.
-\item \texttt{feenableexcept(29)}: остановка на недопустимых
-вещественных операциях, делении на ноль, переполнении и потере точности
-при слишком малом результате (GNU/Linux).
-\end{itemize}
+Макросы задавать \textbf{до всех include}. Для GNU libstdc++:
+\begin{lstlisting}
+#ifdef LOCAL
+#define _GLIBCXX_DEBUG
+#endif
+#include <bits/stdc++.h>
+\end{lstlisting}
+Собрать с \texttt{-DLOCAL}, либо сразу с \texttt{-D\_GLIBCXX\_DEBUG}:
+оба варианта включают проверки итераторов, границ и предусловий STL.
+Прямой \texttt{\#define \_GLIBCXX\_DEBUG} перед include работает так же.
+Может сильно замедлять; перед отправкой отключить. Для программы из
+нескольких файлов режим контейнеров должен совпадать.
+\texttt{\_GLIBCXX\_ASSERTIONS} — более лёгкие проверки предусловий,
+без полной отладки итераторов. Это настройки libstdc++, не libc++.
+
+Для ошибок памяти и UB дополнительно:
+\begin{lstlisting}
+g++ -std=c++20 -O1 -g -DLOCAL \
+    -fsanitize=address,undefined \
+    -fno-omit-frame-pointer main.cpp
+\end{lstlisting}
+Санитайзеры включаются флагом компилятора; заменить его одним
+\texttt{\#define} нельзя. Не все ошибки обязательно будут обнаружены.
+
+Для вещественной арифметики в GNU/Linux (внутри main):
+\begin{lstlisting}
+#ifdef LOCAL
+feenableexcept(FE_INVALID | FE_DIVBYZERO | FE_OVERFLOW);
+#endif
+\end{lstlisting}
+Это остановка на недопустимой операции (например, sqrt(-1)), делении
+на ноль и переполнении. Нужен \texttt{<fenv.h>} и GNU-расширения.
+\texttt{FE\_UNDERFLOW} можно добавить отдельно: ловит слишком малый
+результат, часто допустимый для задачи. Использовать именованные флаги,
+а не непереносимое число 29. \texttt{FE\_INEXACT} ловит обычные
+округления и обычно мешает. Не сочетать с \texttt{fast-math/Ofast}.
+
 \section{Ускорение}
 \subsection{Битовые приёмы}
 \begin{itemize}[nosep,leftmargin=*]
@@ -50,7 +78,6 @@ for (int b = 0; b < k; ++b)
 \end{itemize}
 	\import{pragmas.tex}
 	\kactlimport{FastMod.h}
-	\kactlimport{FastInput.h}
 	\kactlimport{BumpAllocator.h}
 	\kactlimport{SmallPtr.h}
 	\kactlimport{BumpAllocatorSTL.h}

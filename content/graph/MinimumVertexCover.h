@@ -10,15 +10,15 @@
 
 #include "Kuhn.h"
 
-vi cover(vector<vi> &g, int n, int m) {
+vector<int> cover(vector<vector<int>> &g, int n, int m) {
     kuhn matcher;
     int res = matcher.solve(g, m);
-    const vi &match = matcher.match;
+    const vector<int> &match = matcher.match;
     vector<bool> lfound(n, true), seen(m);
     for (int it : match)
         if (it != -1)
             lfound[it] = false;
-    vi q, cover;
+    vector<int> q, cover;
     for (int i = 0; i < (n); ++i)
         if (lfound[i])
             q.eb(i);

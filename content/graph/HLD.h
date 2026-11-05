@@ -3,23 +3,30 @@
  * Date: 2020-01-12
  * License: CC0
  * Source: https://codeforces.com/blog/entry/53170, https://github.com/bqi343/USACO/blob/master/Implementations/content/graphs%20(12)/Trees%20(10)/HLD%20(10.3).h
- * Description: Разбиение дерева на тяжёлые пути; до корня не больше O(\log n) лёгких рёбер. Реализованы прибавление и максимум на пути/поддереве; подходят другие коммутативные операции ДО. Вход — полный список смежности, корень 0. VALS\_EDGES=true хранит значения на рёбрах, иначе на вершинах. Начальные значения задаёт ДО.
+ * Description: Разбиение дерева на тяжёлые пути; до корня не больше O(\log n) лёгких рёбер. Реализованы прибавление и максимум на пути/поддереве; подходят другие коммутативные операции ДО. Вход — полный список смежности, корень 0. VALS\_EDGES=true хранит значения на рёбрах, иначе на вершинах. Начальные значения — нули; tree.update(pos[v],delta) меняет одну вершину. Для рёбер значение хранится в позиции нижнего конца; при запросе пути вершины к себе ответ — INT\_MIN.
 
  * Time: O((\log N)^2)
  * Status: stress-tested against old HLD
  */
 #pragma once
 
-#include "../data-structures/LazySegmentTree.h"
+#include "../data-structures/GenericSegmentTree.h"
 
 template <bool VALS_EDGES> struct HLD {
     int N, tim = 0;
-    vector<vi> adj;
-    vi par, siz, rt, pos;
-    Node *tree;
-    HLD(vector<vi> adj_)
-        : N(sz(adj_)), adj(adj_), par(N, -1), siz(N, 1), rt(N),
-          pos(N), tree(new Node(0, N)) {
+    vector<vector<int>> adj;
+    vector<int> par, siz, rt, pos;
+    static int combine(int a, int b) { return max(a, b); }
+    static int neutral_node() { return INT_MIN; }
+    static int composition(int a, int b) { return a + b; }
+    static int sync(int a, int b) { return a + b; }
+    static int neutral_push() { return 0; }
+    using tree_t = seg_tree_t<int, combine, neutral_node, int,
+                              composition, sync, neutral_push>;
+    tree_t tree;
+    HLD(vector<vector<int>> adj_)
+        : N(int(adj_.size())), adj(adj_), par(N, -1), siz(N, 1),
+          rt(N), pos(N), tree(vector<int>(N)) {
         dfsSz(0);
         dfsHld(0);
     }
@@ -52,17 +59,16 @@ template <bool VALS_EDGES> struct HLD {
     }
     void modifyPath(int u, int v, int val) {
         process(u, v,
-                [&](int l, int r) { tree->add(l, r, val); });
+                [&](int l, int r) { tree.update(l, r, val); });
     }
     int queryPath(int u, int v) { // изменить под задачу
-        int res = -1e9;
+        int res = INT_MIN;
         process(u, v, [&](int l, int r) {
-            res = max(res, tree->query(l, r));
+            res = max(res, tree.get(l, r));
         });
         return res;
     }
     int querySubtree(int v) { // modifySubtree аналогично
-        return tree->query(pos[v] + VALS_EDGES,
-                           pos[v] + siz[v]);
+        return tree.get(pos[v] + VALS_EDGES, pos[v] + siz[v]);
     }
 };

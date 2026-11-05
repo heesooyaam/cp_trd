@@ -11,7 +11,7 @@
 
 const int MAX_PR = 5'000'000;
 bitset<MAX_PR> isprime;
-vi eratosthenesSieve(int lim) {
+vector<int> eratosthenesSieve(int lim) {
     isprime.set();
     isprime[0] = isprime[1] = 0;
     for (int i = 4; i < lim; i += 2)
@@ -20,7 +20,7 @@ vi eratosthenesSieve(int lim) {
         if (isprime[i])
             for (int j = i * i; j < lim; j += i * 2)
                 isprime[j] = 0;
-    vi pr;
+    vector<int> pr;
     for (int i = 2; i < (lim); ++i)
         if (isprime[i])
             pr.eb(i);

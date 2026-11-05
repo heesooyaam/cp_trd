@@ -15,18 +15,20 @@ void add(int ind, int end) {
 } // добавить a[ind] (end = 0 или 1)
 void del(int ind, int end) {
     ...
-}               // удалить a[ind]
+} // удалить a[ind]
 int calc(){...} // текущий ответ
 
-vi mo(vector<pii> Q) {
+vector<int> mo(vector<pair<int, int>> Q) {
     int L = 0, R = 0, blk = 350; // ~N/sqrt(Q)
-    vi s(sz(Q)), res = s;
-#define K(x) pii(x.first / blk, x.second ^ -(x.first / blk & 1))
+    vector<int> s(sz(Q)), res = s;
+#define K(x)                                                   \
+    pair<int, int>(x.first / blk,                              \
+                   x.second ^ -(x.first / blk & 1))
     iota(all(s), 0);
     sort(all(s),
          [&](int s, int t) { return K(Q[s]) < K(Q[t]); });
     for (int qi : s) {
-        pii q = Q[qi];
+        pair<int, int> q = Q[qi];
         while (L > q.first)
             add(--L, 0);
         while (R < q.second)
@@ -40,10 +42,11 @@ vi mo(vector<pii> Q) {
     return res;
 }
 
-vi moTree(vector<array<int, 2>> Q, vector<vi> &ed,
-          int root = 0) {
+vector<int> moTree(vector<array<int, 2>> Q,
+                   vector<vector<int>> &ed, int root = 0) {
     int N = sz(ed), pos[2] = {}, blk = 350; // ~N/sqrt(Q)
-    vi s(sz(Q)), res = s, I(N), L(N), R(N), in(N), par(N);
+    vector<int> s(sz(Q)), res = s, I(N), L(N), R(N), in(N),
+                          par(N);
     add(0, 0), in[0] = 1;
     auto dfs = [&](int x, int p, int dep, auto &f) -> void {
         par[x] = p;
@@ -58,7 +61,9 @@ vi moTree(vector<array<int, 2>> Q, vector<vi> &ed,
         R[x] = N;
     };
     dfs(root, -1, 0, dfs);
-#define K(x) pii(I[x[0]] / blk, I[x[1]] ^ -(I[x[0]] / blk & 1))
+#define K(x)                                                   \
+    pair<int, int>(I[x[0]] / blk,                              \
+                   I[x[1]] ^ -(I[x[0]] / blk & 1))
     iota(all(s), 0);
     sort(all(s),
          [&](int s, int t) { return K(Q[s]) < K(Q[t]); });

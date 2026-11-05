@@ -19,7 +19,7 @@ struct Node {
     int lo, hi, mset = inf, madd = 0, val = -inf;
     Node(int lo, int hi)
         : lo(lo), hi(hi) {} // интервал заполнен -inf
-    Node(vi &v, int lo, int hi) : lo(lo), hi(hi) {
+    Node(vector<int> &v, int lo, int hi) : lo(lo), hi(hi) {
         if (lo + 1 < hi) {
             int mid = lo + (hi - lo) / 2;
             l = new Node(v, lo, mid);
