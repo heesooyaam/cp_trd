@@ -1,0 +1,65 @@
+\subsection{GCC pragmas: bitsets and tight loops}
+\begingroup
+\let\latintexttt\texttt
+\renewcommand{\texttt}[1]{{\fontencoding{T1}\selectfont\latintexttt{#1}}}
+\begin{otherlanguage}{russian}
+Для GCC на x86 с поддержкой AVX2 и POPCNT можно проверить
+такой набор \textbf{в самом начале файла, до include}:
+\begin{lstlisting}
+#pragma GCC optimize("O3,unroll-loops")
+#pragma GCC target("avx2,popcnt")
+#include <bits/stdc++.h>
+\end{lstlisting}
+Это четыре опции в двух строках, а не универсальное ускорение.
+\begin{itemize}[nosep,leftmargin=*]
+\item \texttt{popcnt}: аппаратный подсчёт единиц, полезен для
+\texttt{bitset::count()} и \texttt{\_\_builtin\_popcountll}.
+\item \texttt{avx2}: разрешает 256-битные SIMD-инструкции.
+Может ускорить массовые AND/OR/XOR; сам по себе не добавляет
+векторную инструкцию popcount.
+\item \texttt{O3}: более агрессивная оптимизация циклов и
+векторизация. Современный GCC умеет векторизовать и при O2.
+\item \texttt{unroll-loops}: разворачивание циклов; уменьшает
+накладные расходы, но увеличивает код и иногда замедляет.
+\end{itemize}
+Начать можно с одного \texttt{target("popcnt")}, затем сравнить
+полный набор на максимальном тесте.
+\texttt{bmi,bmi2,lzcnt} добавляют отдельные битовые инструкции;
+для обычного bitset не обязательны.
+\texttt{fma} относится к вещественному multiply-add, не к битсетам.
+
+\textbf{Ограничения.}
+Неподдерживаемый target может дать Illegal instruction на судье;
+наличие инструкции на своём ПК этого не исключает.
+Не включать \texttt{Ofast}/\texttt{fast-math} автоматически:
+они ослабляют правила вещественной арифметики, включая
+NaN/Inf и порядок вычислений. Для геометрии особенно опасно.
+\texttt{O3} не включает \texttt{fast-math}.
+Проверять предупреждения \texttt{-Wall -Wextra -Wpragmas}.
+
+Для отдельного участка:
+\begin{lstlisting}
+#pragma GCC push_options
+#pragma GCC optimize("O3")
+#pragma GCC target("popcnt")
+// definitions of the selected functions
+#pragma GCC pop_options
+\end{lstlisting}
+Для одного цикла: \texttt{\#pragma GCC unroll 4} перед ним.
+\texttt{\#pragma GCC ivdep} обещает отсутствие зависимостей,
+мешающих SIMD; нельзя ставить на произвольный DP-цикл.
+
+Не переносить старые хаки, переопределяющие
+\texttt{\_\_cplusplus} или \texttt{unsigned}, ради 64-битного
+bitset. Размер блока зависит от ABI и библиотеки. При необходимости
+контролировать его явно через \texttt{vector<uint64\_t>}.
+Для битсетов \texttt{\& | \^{} << >>} работают блоками, а
+\texttt{operator[]} в цикле перебирает отдельные биты.
+{\scriptsize Источники:
+\href{https://codeforces.com/blog/entry/129283}{CF: GCC pragmas},
+\href{https://codeforces.com/blog/entry/77480}{CF: bitset},
+\href{https://gcc.gnu.org/onlinedocs/gcc/Function-Specific-Option-Pragmas.html}{GCC manual}.
+Подробнее: \texttt{doc/pragmas.md}.}
+
+\end{otherlanguage}
+\endgroup

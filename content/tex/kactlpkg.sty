@@ -2,6 +2,8 @@
 % License: CC0
 \ProvidesPackage{kactlpkg}
 
+\usepackage[T2A,T1]{fontenc}
+\usepackage[russian,english]{babel}
 \usepackage[utf8]{inputenc}             % Encoding UTF-8
 \usepackage{listings}                   % Source code listings
 \usepackage{framed}                     % Source code listings
@@ -122,9 +124,9 @@
 
 	\parindent \z@ \raggedright \normalfont
 		\interlinepenalty\@M
-	{\underline{\huge \bfseries #1} }
+	{\underline{\Large \bfseries #1} }
 	\ifnum \c@secnumdepth >\m@ne
-		{\huge\bfseries (\thechapter) \par\nobreak }
+		{\Large\bfseries (\thechapter) \par\nobreak }
 	\fi
 	\startcontents[chapters]
 }
@@ -132,17 +134,17 @@
 \renewcommand\section{\@startsection {section}{1}{\z@}%
                                    {-0.5ex \@plus -1ex \@minus -.2ex}%
                                    {.4ex}%
-                                   {\normalfont\LARGE\bfseries}}
+                                   {\normalfont\normalsize\bfseries}}
 
 \renewcommand\subsection{\@startsection{subsection}{2}{\z@}
 	{1ex\@plus -1ex \@minus -.3ex}
 	{.2ex}
-	{\normalfont\large\bfseries}}
+	{\normalfont\normalsize\bfseries}}
 
 \renewcommand\subsubsection{\@startsection{subsubsection}{3}{\z@}
 	{1ex\@plus -1ex \@minus -.3ex}
 	{1ex \@plus .2ex}
-	{\normalfont\large\bfseries}}
+	{\normalfont\normalsize\bfseries}}
 
 % Styles for local toc
 \titlecontents{localsection}[1.5em]{\small}{}
@@ -199,16 +201,17 @@
 \lstset{tabsize=2}
 \lstset{showstringspaces=false}
 \lstset{breaklines=true}
-\lstset{basicstyle=\footnotesize\ttfamily}
+\lstset{basicstyle=\fontencoding{T1}\fontsize{6.5}{7.2}\selectfont\ttfamily}
 \lstset{commentstyle=\normalfont\itshape}
 \lstset{literate={^}{\caret}{1} {~}{\tilde}{1} {\{}{\nicelbrace}{1} {\}}{\nicerbrace}{1}}
 \lstset{emptylines=*1}
 \lstset{inputencoding=utf8}
-\lstset{aboveskip=3pt}
-\lstset{belowskip=2pt}
+\lstset{aboveskip=2pt}
+\lstset{belowskip=1pt}
 
 \lstdefinelanguage{raw}{} % Raw language, no keywords.
 
+\setlength{\parskip}{1pt}
 \setlength{\columnseprule}{0.5pt} % Multicol separation line with
 \setlength{\columnsep}{10pt} % Multicol separation margin
 \setcounter{tocdepth}{1} % Table of contents depth
@@ -221,7 +224,7 @@
 	\begin{center}
 		\strut % Magic
 		\vspace{3cm}\\
-		\includegraphics[width=3cm]{\@unilogo}\\
+		{\fontsize{28}{32}\selectfont\texttt{C++20}}\\
 		{\fontsize{25}{30}\selectfont \@unilong\\}
 		{\fontsize{60}{60}\selectfont \@teamname\\}
 		\vspace{0.5cm}

@@ -1,24 +1,48 @@
-name: C/C++ CI
-
+name: C++20 reference checks
 on:
   push:
-    branches: [ main ]
+    branches: [main, 'codex/**']
   pull_request:
-    branches: [ main ]
-
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
 jobs:
-  build:
-
+  reference:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
-
+    timeout-minutes: 25
     steps:
-    - uses: actions/checkout@v2
-    - name: Install pdflatex
-      run: sudo apt-get install texlive-latex-base texlive-latex-recommended texlive-latex-extra
-    - name: Build pdf
-      run: make kactl
-    - name: Run compiles
-      run: make test-compiles
-    - name: Run stress tests
-      run: make test
+      - uses: actions/checkout@v4
+      - name: Install LaTeX and PDF tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y texlive-latex-base texlive-latex-recommended texlive-latex-extra texlive-lang-cyrillic cm-super poppler-utils bc
+      - name: Build PDF
+        run: make kactl
+      - name: Save PDF
+        uses: actions/upload-artifact@v4
+        with:
+          name: cp_trd
+          path: kactl.pdf
+      - name: Enforce 25 pages plus cover
+        run: |
+          pages=$(pdfinfo kactl.pdf | awk '/^Pages:/ {print $2}')
+          echo "PDF pages including cover: $pages"
+          test "$pages" -le 26
+      - name: Compile headers in C++20
+        run: make test-compiles
+      - name: Run stress tests in C++20
+        run: make test
+      - name: Sanitizers for new code
+        run: |
+          g++ -std=c++20 -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer stress-tests/team/Reference.cpp -o /tmp/team-tests
+          /tmp/team-tests
+      - name: Check pragma examples
+        run: |
+          for mode in 0 1 2 3; do
+            g++ -std=c++20 -O2 -Wall -Wextra -Werror -DCP_BITSET_MODE=$mode doc/benchmarks/bitset.cpp -o /tmp/bitset-$mode
+          done
+          if grep -qw avx2 /proc/cpuinfo && grep -qw popcnt /proc/cpuinfo; then
+            for mode in 0 1 2 3; do /tmp/bitset-$mode 1000 > /tmp/result-$mode; done
+            for mode in 1 2 3; do cmp /tmp/result-0 /tmp/result-$mode; done
+          fi

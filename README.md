@@ -1,4 +1,41 @@
-# KACTL
+# cp_trd
+
+Командный справочник на основе KACTL. Цель: **C++20, не более 25 страниц + обложка**.
+Новые шаблоны оформлены в стиле heesooyaam: 4 пробела, обычные циклы, snake_case;
+исходные алгоритмы KACTL сохраняют свой стиль.
+
+- [PDF для печати](kactl.pdf)
+- [Состав, источники и изменения при переносе](doc/team-sources.md)
+- [Дерево вложенности окружностей](doc/circle-tree.md)
+- [Прагмы и ускорение bitset](doc/pragmas.md)
+- [Ordered set / multiset / map](doc/ordered-containers.md)
+
+Сборка: GNU make, Python 3, pdflatex, GNU cpp; тесты: GCC/libstdc++ с C++20.
+На Debian/Ubuntu нужны texlive-latex-base, texlive-latex-recommended,
+texlive-latex-extra, texlive-lang-cyrillic, cm-super, poppler-utils и bc.
+На macOS дополнительно нужен GNU GCC (например, brew install gcc).
+
+~~~sh
+make kactl
+make test-compiles
+make test
+# macOS: укажите доступную версию GNU GCC:
+make test-compiles CXX=g++-16
+make test CXX=g++-16
+~~~
+
+GitHub Actions собирает PDF, проверяет лимит страниц, компиляцию заголовков,
+стресс-тесты, санитайзеры новых алгоритмов и синтаксис примеров прагм.
+Прагмы из памятки **не включены автоматически** в шаблон решения.
+
+Основной файл: content/kactl.tex. Состав каждого раздела задаёт chapter.tex.
+Исключённые из печати альтернативы остаются в репозитории со своими тестами.
+Один алгоритм переносится в решение вместе с указанными зависимостями;
+весь каталог заголовков одновременно подключать не предполагается.
+
+---
+
+# Upstream KACTL
 
 This repo hosts KACTL, [KTH](https://en.wikipedia.org/wiki/KTH_Royal_Institute_of_Technology)'s ICPC team reference document.
 It consists of 25 pages of copy-pasteable C++ code, for use in ICPC-style programming competitions.
