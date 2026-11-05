@@ -1,16 +1,16 @@
 #include <bits/stdc++.h>
 
-#define all(x) begin(x), end(x)
+#define all(x) std::begin(x), std::end(x)
 typedef long long ll;
 using namespace std;
 #ifndef all
-#define all(x) begin(x), end(x)
+#define all(x) std::begin(x), std::end(x)
 #endif
 #ifndef eb
 #define eb(...) emplace_back(__VA_ARGS__)
 #endif
 
-#define all(x) begin(x), end(x)
+#define all(x) std::begin(x), std::end(x)
 #define sz(x) (int)(x).size()
 typedef long long ll;
 typedef pair<int, int> pii;

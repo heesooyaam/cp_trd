@@ -216,7 +216,7 @@ void stress(bool onlySmall = false) {
 
 void perf() {
 	string str;
-	for (int i = 0; i < (300'000)
+	for (int i = 0; i < 300'000; ++i)
 		str += (char)('a' + (rand() % 10));
 	ll res = 0;
 	for (int i = 0; i < (30); ++i) {
@@ -228,7 +228,7 @@ void perf() {
 
 void perf2() {
 	vi str;
-	for (int i = 0; i < (300'000); ++i); ++i)
+	for (int i = 0; i < 300'000; ++i)
 		str.eb(1 + (rand() % 100'000));
 	str.eb(0);
 	ll res = 0;
