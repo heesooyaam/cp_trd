@@ -24,11 +24,6 @@ jobs:
         with:
           name: cp_trd
           path: kactl.pdf
-      - name: Enforce 25 pages plus cover
-        run: |
-          pages=$(pdfinfo kactl.pdf | awk '/^Pages:/ {print $2}')
-          echo "PDF pages including cover: $pages"
-          test "$pages" -le 26
       - name: Compile headers in C++20
         run: make test-compiles
       - name: Run stress tests in C++20
@@ -46,3 +41,8 @@ jobs:
             for mode in 0 1 2 3; do /tmp/bitset-$mode 1000 > /tmp/result-$mode; done
             for mode in 1 2 3; do cmp /tmp/result-0 /tmp/result-$mode; done
           fi
+      - name: Enforce 25 pages plus cover
+        run: |
+          pages=$(pdfinfo kactl.pdf | awk '/^Pages:/ {print $2}')
+          echo "PDF pages including cover: $pages"
+          test "$pages" -le 26
