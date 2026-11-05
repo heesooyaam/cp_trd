@@ -8,7 +8,7 @@
  * vvd A = {{1,-1}, {-1,1}, {-1,-2}};
  * vd b = {1,1,-4}, c = {-1,-1}, x;
  * T val = LPSolver(A, b, c).solve(x);
- * Time: O(NM * \#pivots), where a pivot may be e.g. an edge relaxation. O(2^n) in the general case.
+ * Time: O(NM) на поворот; в общем случае экспоненциальное число поворотов.
  * Status: seems to work?
  */
 #pragma once

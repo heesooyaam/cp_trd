@@ -49,7 +49,7 @@ def ordoescape(input, esc=True):
 def addref(caption, outstream):
     caption = pathescape(caption).strip()
     print(r"\kactlref{%s}" % caption, file=outstream)
-    with open('header.tmp', 'a') as f:
+    with open('build/header.tmp', 'a') as f:
         f.write(caption + "\n")
 
 COMMENT_TYPES = [
@@ -227,7 +227,7 @@ def print_header(data, outstream):
     output = r"\hspace{3mm}\textbf{" + output + "}"
     output = "\\fontsize{%d}{%d}" % (font_size, font_size) + output
     print(output, file=outstream)
-    with open('header.tmp', 'w') as f:
+    with open('build/header.tmp', 'w') as f:
         for line in lines[ind:]:
             f.write(line + "\n")
 

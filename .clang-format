@@ -1,0 +1,13 @@
+BasedOnStyle: LLVM
+IndentWidth: 4
+TabWidth: 4
+UseTab: Never
+ColumnLimit: 64
+AllowShortIfStatementsOnASingleLine: Never
+AllowShortLoopsOnASingleLine: false
+AllowShortFunctionsOnASingleLine: InlineOnly
+AllowShortBlocksOnASingleLine: Never
+BreakBeforeBraces: Attach
+SortIncludes: Never
+ReflowComments: Never
+BinPackArguments: true

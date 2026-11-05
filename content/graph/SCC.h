@@ -6,9 +6,9 @@
  * Description: Компоненты сильной связности ориентированного графа: любые две вершины одной компоненты взаимно достижимы.
 
  * Usage: scc(graph, [\&](vi\& v) { ... }) обрабатывает все компоненты
- * in reverse topological order. comp[i] holds the component
- * index of a node (a component only has edges to components with
- * lower index). ncomps will contain the number of components.
+ * в обратном топологическом порядке. comp[i] — номер компоненты
+ * вершины i; рёбра между компонентами направлены
+ * к меньшим номерам. ncomps — число компонент.
  * Time: O(E + V)
  * Status: Bruteforce-tested for N <= 5
  */

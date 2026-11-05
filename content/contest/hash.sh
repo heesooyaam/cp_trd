@@ -1,6 +1,6 @@
 #!/bin/sh
-# Hash code ignoring whitespace/comments; GNU cpp is required.
-# On macOS: brew install gcc.
+# Хеш кода без пробелов и комментариев; нужен GNU cpp.
+# Для macOS: brew install gcc.
 compiler=cpp
 if [ "$(uname -s)" = Darwin ]; then
     for candidate in cpp-16 cpp-15 cpp-14 cpp-13; do

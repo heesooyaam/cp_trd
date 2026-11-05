@@ -4,7 +4,7 @@
  * Description: Все делители каждого x из [1,n] по возрастанию в общем массиве. Представление диапазона действительно до уничтожения структуры.
 
  * Usage: divisors_sieve_t s(n); for (int d : s.get(x)) { ... }
- * Time: O(n \log n) time and память.
+ * Time: O(n \log n) время и память.
  * Status: Tested against enumeration.
  */
 #pragma once

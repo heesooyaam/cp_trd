@@ -6,13 +6,13 @@
  * Description: Находит значения булевых переменных для конъюнкции дизъюнкций по два литерала либо сообщает о несовместности. Отрицание переменной x кодируется побитовым дополнением \texttt{\tilde{}x}.
 
  * Usage:
- *  TwoSat ts(number of boolean variables);
- *  ts.either(0, \tilde3); // Var 0 is true or var 3 is false
- *  ts.setValue(2); // Var 2 is true
- *  ts.atMostOne({0,\tilde1,2}); // <= 1 of vars 0, \tilde1 and 2 are true
- *  ts.solve(); // Returns true iff it is solvable
- *  ts.values[0..N-1] holds the assigned values to the vars
- * Time: O(N+E), where N is the number of boolean variables, and E is the number of clauses.
+ *  TwoSat ts(n);
+ *  ts.either(0, \tilde3); // x0 или не x3
+ *  ts.setValue(2); // x2 истина
+ *  ts.atMostOne({0,\tilde1,2}); // не более одного из x0, не x1, x2
+ *  ts.solve(); // true, если решение есть
+ *  // ts.values[0..n-1] — найденные значения
+ * Time: O(N+E), N — число переменных, E — число дизъюнкций.
  * Status: stress-tested
  */
 #pragma once

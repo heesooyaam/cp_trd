@@ -6,9 +6,9 @@
  * Description: Упорядочение углов, заданных целочисленными векторами и числом полных оборотов. Полезно для вращающейся заметающей прямой.
 
  * Usage:
- *  vector<Angle> v = {w[0], w[0].t360() ...}; // sorted
+ *  vector<Angle> v = {w[0], w[0].t360() ...}; // отсортировано
  *  int j = 0; for (int i = 0; i < (n); ++i) { while (v[j] < v[i].t180()) ++j; }
- *  // sweeps j such that (j-i) represents the number of positively oriented triangles with vertices at 0 and i
+ *  // j-i — число положительно ориентированных треугольников с вершинами 0 и i
  * Status: Used, works well
  */
 #pragma once

@@ -3,7 +3,7 @@
  * Source: Templates/Потоки/MinCostMaxFlow
  * Description: Поток минимальной стоимости: кратчайшие пути с потенциалами Джонсона. Отрицательные стоимости допустимы, отрицательные циклы в остаточной сети — нет. Возвращает дополнительный (поток,стоимость), не больше limit; s!=t. Кратные рёбра допустимы. Потенциалы, расстояния и стоимость должны помещаться в ll, расстояния строго меньше inf.
 
- * Time: O(VE + A E \log V), A augmentations.
+ * Time: O(VE + A E \log V), A — число увеличений потока.
  * Status: Small graphs checked by enumerating feasible flows.
  */
 #pragma once

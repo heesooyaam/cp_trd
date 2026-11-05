@@ -27,8 +27,8 @@
 Для multiset id должны быть уникальны и лежать в [0,INT_MAX):
 
 ~~~cpp
-ms.order_of_key({x,0});       // count < x
-ms.order_of_key({x,INT_MAX}); // count <= x
+ms.order_of_key({x,0});       // число < x
+ms.order_of_key({x,INT_MAX}); // число <= x
 // Разность = число копий x.
 // Число элементов [l,r):
 ms.order_of_key({r,0}) - ms.order_of_key({l,0});

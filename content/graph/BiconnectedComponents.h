@@ -7,7 +7,7 @@
 
  * Usage:
  *  int eid = 0; ed.resize(N);
- *  for each edge (a,b) {
+ *  for (auto [a,b] : edges) {
  *    ed[a].eb(b, eid);
  *    ed[b].eb(a, eid++); }
  *  bicomps([\&](const vi\& edgelist) {...});
