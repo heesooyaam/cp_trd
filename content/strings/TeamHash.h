@@ -39,7 +39,8 @@ struct hasher {
     hasher(const container_t &data, bool both = false,
            bool cur_ind = true)
         : n(int(data.size()) - int(cur_ind)),
-          rev(max(0, n) + 1), dir(both ? max(0, n) + 1 : 0) {
+          rev(max<int>(0, n) + 1),
+          dir(both ? max<int>(0, n) + 1 : 0) {
         assert(n >= 0);
         while (int(powers.size()) <= n) {
             auto next = powers.back();

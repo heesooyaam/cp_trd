@@ -14,7 +14,7 @@ const ll inf = 1LL << 62;
 void floydWarshall(vector<vector<ll>> &m) {
     int n = sz(m);
     for (int i = 0; i < (n); ++i)
-        m[i][i] = min(m[i][i], 0LL);
+        m[i][i] = min<ll>(m[i][i], 0);
     for (int k = 0; k < (n); ++k)
         for (int i = 0; i < (n); ++i)
             for (int j = 0; j < (n); ++j)

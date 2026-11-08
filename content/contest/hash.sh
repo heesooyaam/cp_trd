@@ -1,5 +1,5 @@
 #!/bin/sh
-# Хеш кода без пробелов и комментариев; нужен GNU cpp.
+# GNU cpp; команды и сверка хеша — на последней странице.
 # Для macOS: brew install gcc.
 compiler=cpp
 if [ "$(uname -s)" = Darwin ]; then

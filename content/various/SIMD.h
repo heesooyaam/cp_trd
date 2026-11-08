@@ -8,7 +8,10 @@
 #pragma once
 
 #pragma GCC target("avx2") // либо sse4.1
+#pragma push_macro("int")
+#undef int
 #include "immintrin.h"     /** keep-include */
+#pragma pop_macro("int")
 
 typedef __m256i mi;
 #define L(x) _mm256_loadu_si256((mi *)&(x))
@@ -31,7 +34,7 @@ typedef __m256i mi;
 
 int sumi32(mi m) {
     union {
-        int v[8];
+        int32_t v[8];
         mi m;
     } u;
     u.m = m;

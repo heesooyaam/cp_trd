@@ -10,7 +10,7 @@
 vector<int> suffix_array(string_view s) {
     int n = int(s.size()) + 1;
     vector<int> a(n), p(n), c(n), pn(n), cn(n);
-    vector<int> cnt(max(n, 257));
+    vector<int> cnt(max<int>(n, 257));
     for (int i = 0; i < n - 1; ++i) {
         a[i] = (unsigned char)s[i] + 1;
     }
@@ -47,7 +47,7 @@ vector<int> suffix_array(string_view s) {
 }
 vector<int> suffix_lcp(string_view s, const vector<int> &sa) {
     int n = int(s.size()), k = 0;
-    vector<int> pos(n), lcp(max(0, n - 1));
+    vector<int> pos(n), lcp(max<int>(0, n - 1));
     for (int i = 0; i < n; ++i)
         pos[sa[i]] = i;
     for (int i = 0; i < n; ++i) {

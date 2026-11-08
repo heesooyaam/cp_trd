@@ -21,7 +21,7 @@ anneal(vector<int> p, Cost cost, int steps, double start_temp,
     uniform_int_distribution<int> index(0, n - 1);
     uniform_real_distribution<double> real(0, 1);
     for (int step = 0; step < steps; ++step) {
-        double t = double(step) / max(1, steps - 1);
+        double t = double(step) / max<int>(1, steps - 1);
         double temp =
             exp(log(start_temp) * (1 - t) + log(end_temp) * t);
         int i = index(rng), j = index(rng);
