@@ -36,6 +36,8 @@ jobs:
           /tmp/structure-tests
           g++ -std=c++20 -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer stress-tests/team/DiophantineDynamic.cpp -o /tmp/dio-dynamic-tests
           /tmp/dio-dynamic-tests
+          g++ -std=c++20 -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer stress-tests/team/PruferRoman.cpp -o /tmp/prufer-roman-tests
+          /tmp/prufer-roman-tests
       - name: Check pragma examples
         run: |
           for mode in 0 1 2 3; do
