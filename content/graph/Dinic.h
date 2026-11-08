@@ -14,7 +14,7 @@ struct Dinic {
         int to, rev;
         ll c, oc;
         ll flow() {
-            return max(oc - c, 0LL);
+            return max<ll>(oc - c, 0);
         } // if you need flows
     };
     vector<int> lvl, ptr, q;

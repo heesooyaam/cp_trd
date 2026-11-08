@@ -46,7 +46,7 @@ struct Maxclique {
                 if (S[lev]++ / ++pk < limit)
                     init(T);
                 int j = 0, mxk = 1,
-                    mnk = max(sz(qmax) - sz(q) + 1, 1);
+                    mnk = max<int>(sz(qmax) - sz(q) + 1, 1);
                 C[1].clear(), C[2].clear();
                 for (auto v : T) {
                     int k = 1;

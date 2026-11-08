@@ -23,7 +23,7 @@ int knapsack(vector<int> w, int t) {
         for (int x = 0; x < (m); ++x)
             v[x + w[i]] = max(v[x + w[i]], u[x]);
         for (x = 2 * m; --x > m;)
-            for (int j = max(0, u[x]); j < (v[x]); ++j)
+            for (int j = max<int>(0, u[x]); j < (v[x]); ++j)
                 v[x - w[j]] = max(v[x - w[j]], j);
     }
     for (a = t; v[a + m - t] < 0; a--)
